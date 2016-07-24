@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app version="3.0" 
+	xmlns="http://java.sun.com/xml/ns/javaee" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee 
+	http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd">
+	<!-- 全站参数配置 -->
+	<context-param>
+		<description>全站编码配置</description>
+		<param-name>encode</param-name>
+		<param-value>utf-8</param-value>
+	</context-param>
+  <display-name></display-name>
+  
+  <filter>
+	<description>全站乱码过滤器</description>
+	<filter-name>EncodeFilter</filter-name>
+	<filter-class>filter.EncodeFilter</filter-class>
+  </filter>
+  <filter-mapping>
+	<filter-name>EncodeFilter</filter-name>
+	<url-pattern>/*</url-pattern>
+  </filter-mapping>
+  
+  <servlet>
+    <description>This is the description of my J2EE component</description>
+    <display-name>This is the display name of my J2EE component</display-name>
+    <servlet-name>GetExamTypeServlet</servlet-name>
+    <servlet-class>web.GetExamTypeServlet</servlet-class>
+  </servlet>
+  <servlet>
+    <description>This is the description of my J2EE component</description>
+    <display-name>This is the display name of my J2EE component</display-name>
+    <servlet-name>GetStuServlet</servlet-name>
+    <servlet-class>web.GetStuServlet</servlet-class>
+  </servlet>
+  <servlet>
+    <description>This is the description of my J2EE component</description>
+    <display-name>This is the display name of my J2EE component</display-name>
+    <servlet-name>addType</servlet-name>
+    <servlet-class>web.addType</servlet-class>
+  </servlet>
+  <servlet>
+    <description>This is the description of my J2EE component</description>
+    <display-name>This is the display name of my J2EE component</display-name>
+    <servlet-name>UpdateTypeServlet</servlet-name>
+    <servlet-class>web.UpdateTypeServlet</servlet-class>
+  </servlet>
+  <servlet>
+    <description>This is the description of my J2EE component</description>
+    <display-name>This is the display name of my J2EE component</display-name>
+    <servlet-name>AddStuServlet</servlet-name>
+    <servlet-class>web.AddStuServlet</servlet-class>
+  </servlet>
+
+
+
+
+
+  <servlet-mapping>
+    <servlet-name>GetExamTypeServlet</servlet-name>
+    <url-pattern>/GetExamTypeServlet</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>GetStuServlet</servlet-name>
+    <url-pattern>/GetStuServlet</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>addType</servlet-name>
+    <url-pattern>/addType</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>UpdateTypeServlet</servlet-name>
+    <url-pattern>/UpdateTypeServlet</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>AddStuServlet</servlet-name>
+    <url-pattern>/AddStuServlet</url-pattern>
+  </servlet-mapping>	
+  <welcome-file-list>
+    <welcome-file>index.jsp</welcome-file>
+  </welcome-file-list>
+</web-app>
