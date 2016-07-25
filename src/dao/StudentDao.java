@@ -22,7 +22,7 @@ public interface StudentDao extends Dao {
 	 * 删除学生成绩
 	 * @param stu
 	 */
-	public void deleteStudent(Student stu);
+	public void deleteStudent(int id);
 	
 	/**
 	 * 修改学生成绩
@@ -30,4 +30,11 @@ public interface StudentDao extends Dao {
 	 * @return
 	 */
 	public Student updateStudent(Student stu);
+	
+	/**
+	 * 更据id获取学生
+	 * @param id
+	 * @return
+	 */
+	public Student getStudentbyId(int id);
 }

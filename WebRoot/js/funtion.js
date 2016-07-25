@@ -28,19 +28,6 @@ function doSearch(){
 		   		state: $('#state').val()
     		});
 }
- //执行修改
-function edit(url){
-	var ids = [];
-	var rows = $('#dg').datagrid('getSelections');
-	for(var i=0; i<rows.length; i++){
-		ids.push(rows[i].id);
-	}
-	if(ids.length != 1){
-		alert("请指定一份证书进行修改");
-	}else{
-		post(url, {id:ids.toString()});  
-	}
-}
 //执行删除
 function deletes(url){
    	var ids = [];
@@ -66,7 +53,7 @@ function deletes(url){
 		});
 	}
 }
-//导出选中的证书
+//导出选中的行
 function getselections(){
 	return  rows = $('#dg').datagrid('getSelections');
 }

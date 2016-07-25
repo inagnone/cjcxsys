@@ -69,7 +69,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 						      <a href="SearchType.jsp" data-toggle="dropdown" target="date">考试类型查询 </a>
 						    </li>
 						    <li class="dropdown">
-						      <a href="new/ShowcountServlet" data-toggle="dropdown" target="date">证书查询</a>						      
+						      <a href="${basepath }/Certificate" data-toggle="dropdown">证书查询</a>						      
 						    </li>
 						    <li class="dropdown">
 						      <a onClick="return confirm('确认退出登录？')" href="new/LogoutServlet" data-toggle="dropdown" >注销</a>						      

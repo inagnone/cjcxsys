@@ -40,8 +40,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	  	<div id="toolbar" style="padding:3px">
 	  		<div> 
 		  		<div>
-		  		 		<a href="new/ExportExcelServlet" class="easyui-linkbutton" iconCls="icon-save" plain="true" onclick="newUser()">导出所有查询结果到excel文件</a>
-		  		 		<a class="easyui-linkbutton" iconCls="icon-save" plain="true" onclick="getdip()">导出选中证书到excel文件</a>	
+		  		 		<a href="ExportExcel" class="easyui-linkbutton" iconCls="icon-save" plain="true" >导出所有查询结果到excel文件</a>
+		  		 		<a class="easyui-linkbutton" iconCls="icon-save" plain="true" onclick="getstu()">导出选中结果到excel文件</a>	
 		  		 		<a class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="add()">添加</a>	
 		  		 		<a class="easyui-linkbutton" iconCls="icon-edit"  plain="true" onclick="edit()">修改</a>
 		  		 		<a class="easyui-linkbutton" iconCls="icon-cancel"  plain="true" onclick="deletes()">删除</a>
@@ -99,7 +99,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	    					<th data-options="field:'ck',checkbox:true"></th>
 	    					<th field="id" width="50" sortable="true" hidden>id</th>
 			    			<th field="name" width="30" sortable="true" >姓名</th>
-			    			<th field="personId" width="90" >身份证号</th>
+			    			<th field="personid" width="90" >身份证号</th>
 			    			<th field="company" width="100" sortable="true" >工作单位</th>
 			    			<th field="examname" width="70" sortable="true">考试名称</th>
 			    			<th field="exampc" width="50" sortable="true">考试批次</th>
@@ -121,76 +121,153 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 <script src="js/funtion.js"></script>
 
 <div id="addstu" class="easyui-window" title="添加类型" data-options="modal:true,closed:true,iconCls:'icon-save'" style="width:700px;height:300px;padding:10px;">
-	<form action="AddStuServlet" id="type">
+	<form id="form">
+		<input type="hidden" name="id">
 		<table style="border-collapse:   separate; border-spacing:   10px;">
 			<tr>
 				<td>
-					姓名：<input name="name" class="easyui-textbox" style="line-height:26px;border:1px solid #ccc">
+					姓名：<input value="123" id="newname" name="name" class="easyui-textbox" style="line-height:26px;border:1px solid #ccc">
 				</td>
 				<td>
-					身份证号：<input name="personid" class="easyui-textbox" style="line-height:26px;border:1px solid #ccc">
-				</td>
-			</tr>
-			<tr>
-				<td>
-					工作单位：<input name="company" class="easyui-textbox" style="line-height:26px;border:1px solid #ccc">
-				</td>
-				<td>
-					考试名称：<select name="examtype" id="examname"></select>
+					身份证号：<input id="newpersonid" name="personid" class="easyui-textbox" style="line-height:26px;border:1px solid #ccc">
 				</td>
 			</tr>
 			<tr>
 				<td>
-					考试批次：<input name="exampc" class="easyui-textbox" style="line-height:26px;border:1px solid #ccc">
+					工作单位：<input id="newcompany" name="company" class="easyui-textbox" style="line-height:26px;border:1px solid #ccc">
 				</td>
 				<td>
-					考试时间：<input class="easyui-datebox" type="text" name="examtime" data-options="formatter:myformatter,parser:myparser"></input>
-				</td>
-			</tr>
-			<tr>
-				<td>
-					施工企业成绩：<input class="easyui-numberbox" name="sgqycj" precision="0" ></input>
-				</td>
-				<td>
-					水管单位成绩：<input class="easyui-numberbox" name="sgdwcj" precision="0" ></input>
+					考试名称：<select name="examtype" id="newexamname"></select>
 				</td>
 			</tr>
 			<tr>
 				<td>
-					项目法人成绩：<input class="easyui-numberbox" name="xmfrcj" precision="0" ></input>
+					考试批次：<input id="newexampc" name="exampc" class="easyui-textbox" style="line-height:26px;border:1px solid #ccc">
 				</td>
 				<td>
-					专业能力成绩：<input class="easyui-numberbox" name="zynlcj" precision="0"></input>
+					考试时间：<input id="newexamtime" class="easyui-datebox" type="text" name="examtime" data-options="formatter:myformatter,parser:myparser"></input>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					施工企业成绩：<input id="sgqycj" class="easyui-numberbox" name="sgqycj" precision="0" ></input>
+				</td>
+				<td>
+					水管单位成绩：<input id="newsgdwcj" class="easyui-numberbox" name="sgdwcj" precision="0" ></input>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					项目法人成绩：<input id="newxmfrcj" class="easyui-numberbox" name="xmfrcj" precision="0" ></input>
+				</td>
+				<td>
+					专业能力成绩：<input id="newzynlcj" class="easyui-numberbox" name="zynlcj" precision="0"></input>
 				</td>
 			</tr>
 			<tr align="center">
 				<td colspan="2">
-					<input type="submit" value="提交" class="easyui-linkbutton">
-					<a href="javascript:void(0)" class="easyui-linkbutton" onclick="clearForm('#type')">重置</a>
+					<input id="submit" type="submit" value="提交" class="easyui-linkbutton">
+					<a href="javascript:void(0)" class="easyui-linkbutton" onclick="clearForm('#form')">重置</a>
 				</td>
 			</tr>
+		</table>
+	</form>
+	<form action="">
+		<table width="100%">
+			<tr>
+				<td>
+					导入excel文件：
+					<input class="easyui-filebox" name="file1" data-options="prompt:'Choose a file...'" style="width:100%">
+				</td>
+			</tr>
+			<tr><td><a href="#" class="easyui-linkbutton" style="width:100%">Upload</a></td></tr>
 		</table>
 	</form>
 </div>
 
 <script type="text/javascript">
+	//添加
 	function add(){
+		clearForm('#form');
 	   $.ajax({
 		   type: "POST",
 		   url: "GetExamTypeServlet",
 		   success: function(types){
-		     $("#examname  option").remove();
+		     $("#newexamname  option").remove();
 		     var typearray = eval(types);
 		     $.each(types,function(i,item){
 		     	 $("<option></option>")
                     .val(item["typeid"])
                     .text(item["examname"])
-                    .appendTo($("#examname"));
+                    .appendTo($("#newexamname"));
 		     });
+		    $('#form').attr('action','AddStuServlet');
 			$('#addstu').window('open');
 		   }
 	   });
+	};
+	
+	function edit(){
+		var stus = getselections();
+		if(stus.length != 1){
+			alert("请指定一行进行修改");
+			return;
+		}else{
+			$('#form').form('load',{
+				id:stus[0].id,
+				name:stus[0].name,
+				personid:stus[0].personid,
+				company:stus[0].company,
+				exampc:stus[0].exampc,
+				examtime:stus[0].examtime,
+				sgqycj:stus[0].sgqycj,
+				sgdwcj:stus[0].sgdwcj,
+				xmfrcj:stus[0].xmfrcj,
+				zynlcj:stus[0].zynlcj
+			});
+			$('#form').attr('action','UpdateStuServlet');
+			jsSelectItemByValue(document.getElementById("newexamname"), stus[0].examtype);
+			$('#addstu').window('open');
+		}
+	};
+	
+	function deletes(){
+		var rows = getselections();
+		var ids = [];
+		for(var i=0; i<rows.length; i++){
+			ids.push(rows[i].id);
+		}
+		if (rows){
+			$.messager.confirm('Confirm','您确认删除证书吗?',function(r){
+				if (r){
+					$.post("DeleteStuServlet",{id:ids.join(',')},function(result){
+						if (result.success){
+							$('#dg').datagrid('reload');	// reload the user data
+						} else {
+							$.messager.show({	// show error message
+								title: 'Error',
+								msg: result.errorMsg
+							});
+						}
+					},'json');
+					$('#dg').datagrid('reload');
+				}
+			});
+		}
 	}
+	
+	function getstu(){
+		var ids = [];
+		var rows = getselections();
+		for(var i=0; i<rows.length; i++){
+			ids.push(rows[i].id);
+		}
+		if(ids.length == 0){
+			alert("请选择证书");
+		}else{
+			post('ExportExcel',{id:ids});
+		}
+	}	
 </script>
 <!-- 信息提示窗口 -->
 <c:if test="${requestScope.msg != null }">
@@ -209,7 +286,5 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 </c:if>
 
   </body>
-<c:if test="${sessionScope.user.role != 'admin' }">
-<script src="js/nocopy.js">  </script> 
- </c:if>
+
 </html>
