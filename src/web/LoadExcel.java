@@ -74,7 +74,7 @@ public class LoadExcel extends HttpServlet {
 					String realname = item.getName();
 					if(realname.equals("") || realname == null)continue;
 					String type = item.getContentType();
-					if(type.equals("application/vnd.ms-excel") || type.equals("application/kset")){
+					if(type.equals("application/vnd.ms-excel") || type.equals("application/kset") || realname.contains(".xls")){
 						upload = this.getServletContext().getRealPath("WEB-INF/upload/excel");
 						String filetype = realname.substring(realname.indexOf(".")+1);
 						if(!filetype.equals("xls")){

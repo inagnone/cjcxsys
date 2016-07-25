@@ -120,7 +120,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 <script src="js/helloword.js"></script>
 <script src="js/funtion.js"></script>
 
-<div id="addstu" class="easyui-window" title="添加类型" data-options="modal:true,closed:true,iconCls:'icon-save'" style="width:700px;height:300px;padding:10px;">
+<div id="addstu" class="easyui-window" title="添加类型" data-options="modal:true,closed:true,iconCls:'icon-save'" style="width:750px;height:500px;padding:10px;">
 	<form id="form">
 		<input type="hidden" name="id">
 		<table style="border-collapse:   separate; border-spacing:   10px;">
@@ -172,15 +172,15 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			</tr>
 		</table>
 	</form>
-	<form action="">
+	<form action="LoadExcel" enctype="multipart/form-data" method="post">
 		<table width="100%">
 			<tr>
 				<td>
 					导入excel文件：
-					<input class="easyui-filebox" name="file1" data-options="prompt:'Choose a file...'" style="width:100%">
+					<input class="easyui-filebox" name="file1" data-options="prompt:'选择一个文件'" style="width:100%">
 				</td>
 			</tr>
-			<tr><td><a href="#" class="easyui-linkbutton" style="width:100%">Upload</a></td></tr>
+			<tr><td><input type="submit" value="上传" class="easyui-linkbutton" style="width:100%"></td></tr>
 		</table>
 	</form>
 </div>
