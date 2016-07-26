@@ -101,7 +101,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 <script src="js/funtion.js"></script>
 
 <div id="addtype" class="easyui-window" title="添加类型" data-options="modal:true,closed:true,iconCls:'icon-save'" style="width:370px;height:150px;padding:10px;">
-	<form action="addType" id="type">
+	<form action="addType" id="type" method="post">
 		<table style="border-spacing:   10px;">
 			<tr>
 				<td>

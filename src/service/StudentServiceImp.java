@@ -124,6 +124,7 @@ public class StudentServiceImp implements StudentService {
 			String pagemess;
 			HSSFWorkbook hssfworkboot = new HSSFWorkbook(is);
 			List<List<Student>> stus = parseExcel1(hssfworkboot);
+			boolean accessable = true;
 			for(int i=0;i<stus.size();i++){
 				pagemess = "第"+(i+1)+"页:\r\n";
 				fos.write(pagemess.getBytes());
@@ -137,11 +138,15 @@ public class StudentServiceImp implements StudentService {
 					}else{
 						msg = msg+"\r\n";
 						fos.write(msg.getBytes());
+						accessable = false;
 					}
 				}
 			}
 			fos.flush();
 			fos.close();
+			if(!accessable){
+				throw new RuntimeException("成绩信息不规范");
+			}
 			return result;
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
@@ -157,40 +162,40 @@ public class StudentServiceImp implements StudentService {
 		int numSheet = 0;
 		int rowNum = 0;
 		HSSFRow title = hssfworkboot.getSheetAt(0).getRow(1);
-		List<List<Student>> result = null;
+		List<List<Student>> result = new ArrayList<List<Student>>();
 		//检验输入excel文件格式是否符合要求
 		if(title.getCell(0) ==null || !title.getCell(0).getStringCellValue().contains("序号")){
 			throw new RuntimeException("excel文件格式与模板不一致:第一列应是序号列");
 		}
 		if(title.getCell(1) == null || !title.getCell(1).getStringCellValue().contains("姓名")){
-			throw new RuntimeException("excel文件格式与模板不一致:第一列应是姓名列");
+			throw new RuntimeException("excel文件格式与模板不一致:第二列应是姓名列");
 		}
 		if(title.getCell(2) == null || !title.getCell(2).getStringCellValue().contains("工作单位")){
-			throw new RuntimeException("excel文件格式与模板不一致:第一列应是工作单位列");
+			throw new RuntimeException("excel文件格式与模板不一致:第三列应是工作单位列");
 		}
 		if(title.getCell(3) == null || !title.getCell(3).getStringCellValue().contains("身份证号")){
-			throw new RuntimeException("excel文件格式与模板不一致:第一列应是身份证号列");
+			throw new RuntimeException("excel文件格式与模板不一致:第四列应是身份证号列");
 		}
-		if(title.getCell(4) == null || !title.getCell(4).getStringCellValue().contains("考试名称")){
-			throw new RuntimeException("excel文件格式与模板不一致:第一列应是考试名称列");
+		if(title.getCell(4) == null || !title.getCell(4).getStringCellValue().contains("考试类型")){
+			throw new RuntimeException("excel文件格式与模板不一致:第五列应是考试类型列");
 		}
 		if(title.getCell(5) == null || !title.getCell(5).getStringCellValue().contains("考试批次")){
-			throw new RuntimeException("excel文件格式与模板不一致:第一列应是考试批次列");
+			throw new RuntimeException("excel文件格式与模板不一致:第六列应是考试批次列");
 		}
 		if(title.getCell(6) == null || !title.getCell(6).getStringCellValue().contains("考试时间")){
-			throw new RuntimeException("excel文件格式与模板不一致:第一列应是考试时间列");
+			throw new RuntimeException("excel文件格式与模板不一致:第七列应是考试时间列");
 		}
 		if(title.getCell(7) == null || !title.getCell(7).getStringCellValue().contains("施工企业成绩")){
-			throw new RuntimeException("excel文件格式与模板不一致:第一列应是施工企业成绩列");
+			throw new RuntimeException("excel文件格式与模板不一致:第八列应是施工企业成绩列");
 		}
 		if(title.getCell(8) == null || !title.getCell(8).getStringCellValue().contains("水管单位成绩")){
-			throw new RuntimeException("excel文件格式与模板不一致:第一列应是水管单位成绩列");
+			throw new RuntimeException("excel文件格式与模板不一致:第九列应是水管单位成绩列");
 		}
 		if(title.getCell(9) == null || !title.getCell(9).getStringCellValue().contains("项目法人成绩")){
-			throw new RuntimeException("excel文件格式与模板不一致:第一列应是项目法人成绩列");
+			throw new RuntimeException("excel文件格式与模板不一致:第十列应是项目法人成绩列");
 		}
 		if(title.getCell(10) == null || !title.getCell(10).getStringCellValue().contains("专业能力成绩")){
-			throw new RuntimeException("excel文件格式与模板不一致:第一列应是专业能力成绩列");
+			throw new RuntimeException("excel文件格式与模板不一致:第十一列应是专业能力成绩列");
 		}
 		
 		for(numSheet=0;numSheet<hssfworkboot.getNumberOfSheets();numSheet++){
@@ -253,23 +258,23 @@ public class StudentServiceImp implements StudentService {
 				}
 				//施工企业成绩
 				HSSFCell cell7 = hssfRow.getCell(7);
-				if(cell7 != null && !(val = (ExcelUtil.getCellDate(cell7))).equals("")){
-					stu.setSgqycj(Integer.valueOf(val));
+				if(cell7 != null){
+					stu.setSgqycj((int) cell7.getNumericCellValue());
 				}
 				//施工水管单位成绩
 				HSSFCell cell8 = hssfRow.getCell(8);
-				if(cell8 != null && !(val = (ExcelUtil.getCellDate(cell8))).equals("")){
-					stu.setSgqycj(Integer.valueOf(val));
+				if(cell8 != null ){
+					stu.setSgqycj((int) cell8.getNumericCellValue());
 				}
 				//项目法人成绩
 				HSSFCell cell9 = hssfRow.getCell(9);
-				if(cell9 != null && !(val = (ExcelUtil.getCellDate(cell9))).equals("")){
-					stu.setSgqycj(Integer.valueOf(val));
+				if(cell9 != null ){
+					stu.setSgqycj((int) cell9.getNumericCellValue());
 				}
 				//专业能力成绩
 				HSSFCell cell10 = hssfRow.getCell(10);
-				if(cell10 != null && !(val = (ExcelUtil.getCellDate(cell10))).equals("")){
-					stu.setSgqycj(Integer.valueOf(val));
+				if(cell10 != null ){
+					stu.setSgqycj((int) cell10.getNumericCellValue());
 				}
 				page.add(stu);
 			}

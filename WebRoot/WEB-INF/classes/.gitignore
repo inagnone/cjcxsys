@@ -1,4 +1,6 @@
-/web
+/annotation
 /dao
-/service
 /domain
+/factory
+/filter
+/service
