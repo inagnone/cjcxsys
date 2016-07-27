@@ -22,6 +22,7 @@ import org.apache.commons.fileupload.servlet.ServletFileUpload;
 
 import service.StudentService;
 import util.IOUtils;
+import domain.Student;
 import domain.User;
 import factory.BasicFactory;
 
@@ -105,7 +106,7 @@ public class LoadExcel extends HttpServlet {
 			}
 			if(url != null){
 				String realPath = request.getServletContext().getRealPath(url);
-				service.LoadExcel(realPath,result);				
+				List<Student> stus = service.LoadExcel(realPath,result);				
 			}				
 			response.sendRedirect("SearchStu.jsp?msg=success!");
 			return ;

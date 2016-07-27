@@ -84,4 +84,21 @@ public class StudentDaoImp implements StudentDao {
 		return null;
 	}
 
+	@Override
+	public void addStudents(List<Student> stus) {
+		// TODO Auto-generated method stub
+		String sql = "insert into cj values (null,?,?,?,?,?,?,?,?,?,?)";
+		try {
+			QueryRunner runner = new QueryRunner(TransactionManager.getSource());
+			Object[][] objs = new Object[stus.size()][10];
+			for(int i=0;i<stus.size();i++){
+				runner.batch(sql, params)
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+			
+	}
+
 }

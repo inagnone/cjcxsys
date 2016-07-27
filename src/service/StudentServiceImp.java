@@ -248,8 +248,7 @@ public class StudentServiceImp implements StudentService {
 				//考试批次
 				HSSFCell cell5 = hssfRow.getCell(5);
 				if(cell5 != null){
-					String exampc = ExcelUtil.getcellvalue(cell5);
-					stu.setExamtype(exampc);							
+					stu.setExampc((int) cell5.getNumericCellValue());							
 				}
 				//考试时间
 				HSSFCell cell6 = hssfRow.getCell(6);
@@ -261,20 +260,20 @@ public class StudentServiceImp implements StudentService {
 				if(cell7 != null){
 					stu.setSgqycj((int) cell7.getNumericCellValue());
 				}
-				//施工水管单位成绩
+				//水管单位成绩
 				HSSFCell cell8 = hssfRow.getCell(8);
 				if(cell8 != null ){
-					stu.setSgqycj((int) cell8.getNumericCellValue());
+					stu.setSgdwcj((int) cell8.getNumericCellValue());
 				}
 				//项目法人成绩
 				HSSFCell cell9 = hssfRow.getCell(9);
 				if(cell9 != null ){
-					stu.setSgqycj((int) cell9.getNumericCellValue());
+					stu.setXmfrcj((int) cell9.getNumericCellValue());
 				}
 				//专业能力成绩
 				HSSFCell cell10 = hssfRow.getCell(10);
 				if(cell10 != null ){
-					stu.setSgqycj((int) cell10.getNumericCellValue());
+					stu.setZynlcj((int) cell10.getNumericCellValue());
 				}
 				page.add(stu);
 			}

@@ -19,6 +19,12 @@ public interface StudentDao extends Dao {
 	public void addStudent(Student stu);
 	
 	/**
+	 * 批量添加学生成绩
+	 * @param stus
+	 */
+	public void addStudents(List<Student> stus);
+	
+	/**
 	 * 删除学生成绩
 	 * @param stu
 	 */
