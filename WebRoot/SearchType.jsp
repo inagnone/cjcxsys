@@ -57,15 +57,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	  						<span>考试名称:</span>
 		    				<input id="typename" class="easyui-textbox" style="line-height:26px;border:1px solid #ccc">
 	  					</td>
-	  				</tr>
-	  				<tr>
-	  					<td>
-	  						<span>验证码:</span>
-	  						<input id="validcode" class="easyui-textbox" style="line-height:26px;border:1px solid #ccc;width:200px">
-	  					</td>	
-	  					<td>
-	  						
-	  					</td>
 	  					<td>
 	  						<a  class="easyui-linkbutton" plain="true" onclick="doSearch()" iconCls="icon-search">搜索</a>
 	  					</td>
@@ -177,9 +168,15 @@ function edit(){
 	$('#updatetype').window('open');
 	
 }
+//执行搜索
+function doSearch(){
+	//获取搜索条件
+   	$('#dg').datagrid('load',{  
+   		search: true,
+   		typeid: $('#typeid').val(),
+   		typename: $('#typename').val(),
+	});
+}
 </script>
   </body>
-<c:if test="${sessionScope.user.role != 'admin' }">
-<script src="js/nocopy.js">  </script> 
- </c:if>
 </html>

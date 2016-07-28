@@ -9,6 +9,7 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFCellStyle;
@@ -25,9 +26,9 @@ public class StudentServiceImp implements StudentService {
 
 	private StudentDao studentdao = BasicFactory.getFactory().getDao(StudentDao.class);
 	@Override
-	public List<Student> getStudents() {
+	public List<Student> getStudents(Map<String, String[]> map) {
 		// TODO Auto-generated method stub
-		return studentdao.getStudents();
+		return studentdao.getStudents(map);
 	}
 
 	@Override
@@ -113,7 +114,7 @@ public class StudentServiceImp implements StudentService {
 	}
 
 	@Override
-	public ArrayList<Student> LoadExcel(String excelpath, File messfile) {
+	public int LoadExcel(String excelpath, File messfile) {
 		// TODO Auto-generated method stub
 		InputStream is = null;
 		FileOutputStream fos = null;
@@ -147,7 +148,7 @@ public class StudentServiceImp implements StudentService {
 			if(!accessable){
 				throw new RuntimeException("成绩信息不规范");
 			}
-			return result;
+			return addStudents(result);
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -155,7 +156,7 @@ public class StudentServiceImp implements StudentService {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		return null;
+		return 0;
 	}
 
 	private List<List<Student>> parseExcel1(HSSFWorkbook hssfworkboot){
@@ -243,6 +244,9 @@ public class StudentServiceImp implements StudentService {
 				HSSFCell cell4 = hssfRow.getCell(4);
 				if(cell4 != null){
 					String examtype = ExcelUtil.getcellvalue(cell4);
+					if(examtype.length()>2){
+						examtype = examtype.substring(0,2);
+					}
 					stu.setExamtype(examtype);							
 				}
 				//考试批次
@@ -280,5 +284,11 @@ public class StudentServiceImp implements StudentService {
 			result.add(page);
 		}
 		return result;
+	}
+
+	@Override
+	public int addStudents(List<Student> stus) {
+		// TODO Auto-generated method stub
+		return studentdao.addStudents(stus);
 	}
 }

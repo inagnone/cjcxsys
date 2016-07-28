@@ -2,6 +2,7 @@ package dao;
 
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.dbutils.QueryRunner;
 import org.apache.commons.dbutils.handlers.BeanListHandler;
@@ -12,12 +13,19 @@ import domain.ExamType;
 public class ExamTypeDaoImp implements ExamTypeDao {
 
 	@Override
-	public List<ExamType> getExamType() {
+	public List<ExamType> getExamType(Map<String, String[]> map) {
 		// TODO Auto-generated method stub
-		String sql = "select * from examtype";
+		StringBuilder sql = new StringBuilder("select * from examtype where");
+		if(map.get("typeid")!=null && map.get("typeid")[0] != null && !map.get("typeid")[0].equals("")){
+			sql.append(" typeid="+map.get("typeid")[0]+" and ");
+		}
+		if(map.get("typename")!=null && map.get("typename")[0] != null && !map.get("typename")[0].equals("")){
+			sql.append(" examname='"+map.get("typename")[0]+"' and ");
+		}
+		sql.delete(sql.length()-5, sql.length());
 		try {
 			QueryRunner runner = new QueryRunner(TransactionManager.getSource());
-			return runner.query(sql, new BeanListHandler<ExamType>(ExamType.class));
+			return runner.query(sql.toString(), new BeanListHandler<ExamType>(ExamType.class));
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

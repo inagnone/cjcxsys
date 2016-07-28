@@ -2,6 +2,7 @@ package service;
 
 import java.io.File;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 
@@ -12,7 +13,7 @@ public interface StudentService extends Service {
 	 * 获取学生
 	 * @return
 	 */
-	public List<Student> getStudents();
+	public List<Student> getStudents(Map<String, String[]> map);
 	
 	/**
 	 * 更据id获取学生
@@ -25,6 +26,13 @@ public interface StudentService extends Service {
 	 * 添加学生
 	 */
 	public void addStudent(Student stu);
+	
+	/**
+	 * 批量导入学生
+	 * @param stus
+	 * @return
+	 */
+	public int addStudents(List<Student> stus);
 	
 	/**
 	 * 修改学生
@@ -44,7 +52,7 @@ public interface StudentService extends Service {
 	 * @param file
 	 * @return
 	 */
-	public List<Student> LoadExcel(String excelpath,File messfile);
+	public int LoadExcel(String excelpath,File messfile);
 	
 	/**
 	 * 学生信息导出到excel文件

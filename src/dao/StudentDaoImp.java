@@ -2,6 +2,8 @@ package dao;
 
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import org.apache.commons.dbutils.QueryRunner;
 import org.apache.commons.dbutils.handlers.BeanHandler;
@@ -15,12 +17,19 @@ import domain.Student;
 public class StudentDaoImp implements StudentDao {
 
 	@Override
-	public List<Student> getStudents() {
+	public List<Student> getStudents(Map<String, String[]> map) {
 		// TODO Auto-generated method stub
-		String sql = "select cj.id,name,company,personid,examname,examtype,exampc,sgqycj,sgdwcj,xmfrcj,zynlcj,examtime from cj left join examtype on cj.examtype = examtype.typeid";
+		StringBuilder sql = new StringBuilder("select cj.id,name,company,personid,examname,examtype,exampc,sgqycj,sgdwcj,xmfrcj,zynlcj,examtime from cj left join examtype on cj.examtype = examtype.typeid where");
+		if(map.get("name") != null && map.get("name")[0] != null && !map.get("name")[0].equals("")){
+			sql.append(" name="+map.get("name")[0]+" and ");
+		}
+		if(map.get("personid") != null && map.get("personid")[0] != null && !map.get("personid")[0].equals("")){
+			sql.append(" personid="+map.get("personid")[0]+" and ");
+		}
+		sql.delete(sql.length()-5, sql.length());
 		try {
 			QueryRunner runner = new QueryRunner(TransactionManager.getSource());
-			return runner.query(sql, new BeanListHandler<Student>(Student.class));
+			return runner.query(sql.toString(), new BeanListHandler<Student>(Student.class));
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -85,20 +94,30 @@ public class StudentDaoImp implements StudentDao {
 	}
 
 	@Override
-	public void addStudents(List<Student> stus) {
+	public int addStudents(List<Student> stus) {
 		// TODO Auto-generated method stub
 		String sql = "insert into cj values (null,?,?,?,?,?,?,?,?,?,?)";
 		try {
 			QueryRunner runner = new QueryRunner(TransactionManager.getSource());
-			Object[][] objs = new Object[stus.size()][10];
+			Object[][] params = new Object[stus.size()][10];
 			for(int i=0;i<stus.size();i++){
-				runner.batch(sql, params)
+				params[i][0] = stus.get(i).getName();
+				params[i][1] = stus.get(i).getCompany();
+				params[i][2] = stus.get(i).getPersonid();
+				params[i][3] = stus.get(i).getExamtype();
+				params[i][4] = stus.get(i).getExampc();
+				params[i][5] = stus.get(i).getSgqycj();
+				params[i][6] = stus.get(i).getSgdwcj();
+				params[i][7] = stus.get(i).getXmfrcj();
+				params[i][8] = stus.get(i).getZynlcj();
+				params[i][9] = stus.get(i).getExamtime();
 			}
+			return runner.batch(sql, params).length;
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-			
+		return 0;
 	}
 
 }

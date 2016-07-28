@@ -75,6 +75,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	  						<input id="validcode" class="easyui-textbox" style="line-height:26px;border:1px solid #ccc;width:200px">
 	  					</td>	
 	  					<td>
+	  						<img id="valid" src="AuthImage" onclick="changeImg(this)" style="cursor: pointer;"/>
 	  					</td>
 	  					<td>
 	  						<a  class="easyui-linkbutton" plain="true" onclick="doSearch()" iconCls="icon-search">搜索</a>
@@ -208,6 +209,21 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	};
 	
 	function edit(){
+		clearForm('#form');
+		   $.ajax({
+			   type: "POST",
+			   url: "GetExamTypeServlet",
+			   success: function(types){
+			     $("#newexamname  option").remove();
+			     var typearray = eval(types);
+			     $.each(types,function(i,item){
+			     	 $("<option></option>")
+	                    .val(item["typeid"])
+	                    .text(item["examname"])
+	                    .appendTo($("#newexamname"));
+			     });
+			   }
+		   });
 		var stus = getselections();
 		if(stus.length != 1){
 			alert("请指定一行进行修改");
@@ -254,7 +270,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				}
 			});
 		}
-	}
+	};
 	
 	function getstu(){
 		var ids = [];
@@ -267,7 +283,33 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		}else{
 			post('ExportExcel',{id:ids});
 		}
-	}	
+	};
+	
+	function changeImg(img){
+		img.src = img.src+"?time="+new Date().getTime();
+  	};
+	
+	//执行搜索
+	function doSearch(){
+		 $.ajax({
+			   type: "POST",
+			   url: "ValidCodeServlet",
+			   data: "validcode="+$('#validcode').val(),
+			   success: function(result){
+			     if(result.success){
+					//获取搜索条件
+			    	$('#dg').datagrid('load',{  
+				   		search: true,
+				    	name: $('#name').val(),
+				    	personid: $('#personid').val(),
+			   		});
+			     }else{
+			    	 $.messager.alert('My Title',result.msg,'info');
+			     }
+			     changeImg(document.getElementById("valid"));
+			   }
+		   });
+	};
 </script>
 <!-- 信息提示窗口 -->
 <c:if test="${requestScope.msg != null }">

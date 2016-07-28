@@ -13,10 +13,8 @@ import javax.servlet.http.HttpServletResponse;
 import net.sf.json.JSONArray;
 import domain.ExamType;
 import domain.Student;
-
 import service.StudentService;
 import util.JsonUtil;
-
 import factory.BasicFactory;
 
 public class GetStuServlet extends HttpServlet {
@@ -35,16 +33,16 @@ public class GetStuServlet extends HttpServlet {
 			throws ServletException, IOException {
 		StudentService studentService = BasicFactory.getFactory().getService(StudentService.class);
 		List<Student> list = (List<Student>) request.getSession().getAttribute("result");
-//		if(request.getParameterMap().containsKey("search")){
-			list = studentService.getStudents();
-			if(request.getSession().getAttribute("user") != null){
+		if(request.getParameterMap().containsKey("search")){
+			list = studentService.getStudents(request.getParameterMap());
+//			if(request.getSession().getAttribute("user") != null){
 				//存进session，准备导出excel
 				request.getSession().setAttribute("result", list);	
-			}
-//		}else{
-//			if(list== null)
-//			list = new ArrayList<Student>();		
-//		}
+//			}
+		}else{
+			if(list== null)
+			list = new ArrayList<Student>();		
+		}
 		JSONArray jsonArray = JSONArray.fromObject(list,JsonUtil.getConfig());
 		response.setContentType("text/json");
 		response.getWriter().write(jsonArray.toString());

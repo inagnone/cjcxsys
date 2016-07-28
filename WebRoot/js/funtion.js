@@ -2,32 +2,7 @@
 function sorter(a,b){
 	return a.localeCompare(b);
 }
-//执行搜索
-function doSearch(){
-			var user = '${sessionScope.user.name}';
-			if(typeof(user) == "undefined" || user === "") {
-				if($('#typeid').val() == null || $('#typeid').val() === ""){
-					alert("请选择证书类别+其他任意一项以上搜索条件(不包括全部选项)后再执行搜索");
-					return;  	
-				}
-				if($('#name').val() === "" && $('#personid').val()==="" && $('#diplomaid').val()==="" && $('#area').val()==="" && $('#company').val()==="" && $('#job').val()==="" ){
-					alert("请选择证书类别+其他任意一项以上搜索条件(不包括全部选项)后再执行搜索");
-					return; 
-				}
-			}
-			//获取搜索条件
-	    	$('#dg').datagrid('load',{  
-		   		search: true,
-		    	name: $('#name').val(),
-		    	personid: $('#personid').val(),
-		    	diplomaid:	$('#diplomaid').val(),
-		   		area: area,
-		   		company: $('#company').val(),
-		   		job: $('#job').val(),
-		   		typeid: $('#typeid').val(),
-		   		state: $('#state').val()
-    		});
-}
+
 //执行删除
 function deletes(url){
    	var ids = [];
@@ -105,4 +80,7 @@ function myparser(s){
 	} else {
 		return new Date();
 	}
+}
+function changeImg(img){
+		img.src = img.src+"?time="+new Date().getTime();
 }

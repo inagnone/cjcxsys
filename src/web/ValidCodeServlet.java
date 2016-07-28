@@ -1,22 +1,17 @@
 package web;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
+import java.io.PrintWriter;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import net.sf.json.JSONArray;
-import service.TypeService;
-import util.IdCardUtils;
-import util.JsonUtil;
-import domain.ExamType;
-import factory.BasicFactory;
+import org.json.JSONException;
+import org.json.JSONObject;
 
-public class GetExamTypeServlet extends HttpServlet {
+public class ValidCodeServlet extends HttpServlet {
 
 	/**
 	 * The doGet method of the servlet. <br>
@@ -30,12 +25,28 @@ public class GetExamTypeServlet extends HttpServlet {
 	 */
 	public void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		TypeService typeService = BasicFactory.getFactory().getService(TypeService.class);
-		List<ExamType> list = (List<ExamType>) request.getSession().getAttribute("result");
-		list = typeService.getType(request.getParameterMap());
-		JSONArray jsonArray = JSONArray.fromObject(list,JsonUtil.getConfig());
+
+		String validcode = request.getParameter("validcode");
 		response.setContentType("text/json");
-		response.getWriter().write(jsonArray.toString());
+		JSONObject o = new JSONObject();
+		try {
+		if(validcode == null || validcode.equals("")){
+			o.put("success", false);
+			o.put("msg", "验证码不能为空");
+			response.getWriter().write(o.toString());
+			return;
+		}else if(!validcode.equals(request.getSession().getAttribute("validcode"))){
+			o.put("success", false);
+			o.put("msg", "验证码不正确");
+			response.getWriter().write(o.toString());
+			return;
+		}
+			o.put("success", true);
+			response.getWriter().write(o.toString());
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	/**
@@ -50,6 +61,7 @@ public class GetExamTypeServlet extends HttpServlet {
 	 */
 	public void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
+
 		doGet(request, response);
 	}
 

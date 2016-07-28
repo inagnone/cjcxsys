@@ -104,12 +104,12 @@ public class LoadExcel extends HttpServlet {
 					item.delete();
 				}
 			}
+			int seccessnum = 0 ;
 			if(url != null){
 				String realPath = request.getServletContext().getRealPath(url);
-				List<Student> stus = service.LoadExcel(realPath,result);				
+				 seccessnum = service.LoadExcel(realPath,result);				
 			}				
-			response.sendRedirect("SearchStu.jsp?msg=success!");
-			return ;
+			response.sendRedirect("SearchStu.jsp?msg=success_"+seccessnum);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 				

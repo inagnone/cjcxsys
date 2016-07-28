@@ -1,22 +1,16 @@
 package web;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
-import net.sf.json.JSONArray;
-import service.TypeService;
-import util.IdCardUtils;
-import util.JsonUtil;
-import domain.ExamType;
-import factory.BasicFactory;
+import util.VerifyCodeUtils;
 
-public class GetExamTypeServlet extends HttpServlet {
+public class AuthImage extends HttpServlet {
 
 	/**
 	 * The doGet method of the servlet. <br>
@@ -30,12 +24,21 @@ public class GetExamTypeServlet extends HttpServlet {
 	 */
 	public void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		TypeService typeService = BasicFactory.getFactory().getService(TypeService.class);
-		List<ExamType> list = (List<ExamType>) request.getSession().getAttribute("result");
-		list = typeService.getType(request.getParameterMap());
-		JSONArray jsonArray = JSONArray.fromObject(list,JsonUtil.getConfig());
-		response.setContentType("text/json");
-		response.getWriter().write(jsonArray.toString());
+
+		response.setHeader("Pragma", "No-cache");  
+        response.setHeader("Cache-Control", "no-cache");  
+        response.setDateHeader("Expires", 0);  
+        response.setContentType("image/jpeg");  
+          
+        //生成随机字串  
+        String verifyCode = VerifyCodeUtils.generateVerifyCode(4);  
+        System.out.println(verifyCode);
+        //存入会话session  
+        HttpSession session = request.getSession(true);  
+        session.setAttribute("validcode", verifyCode.toLowerCase());  
+        //生成图片  
+        int w = 200, h = 30;  
+        VerifyCodeUtils.outputImage(w, h, response.getOutputStream(), verifyCode); 
 	}
 
 	/**
@@ -50,6 +53,7 @@ public class GetExamTypeServlet extends HttpServlet {
 	 */
 	public void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
+
 		doGet(request, response);
 	}
 

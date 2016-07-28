@@ -1,6 +1,7 @@
 package service;
 
 import java.util.List;
+import java.util.Map;
 
 import dao.ExamTypeDao;
 import domain.ExamType;
@@ -22,9 +23,9 @@ public class TypeServiceImp implements TypeService {
 	}
 
 	@Override
-	public List<ExamType> getType() {
+	public List<ExamType> getType(Map<String, String[]> map) {
 		// TODO Auto-generated method stub
-		return typedao.getExamType();
+		return typedao.getExamType(map);
 	}
 
 }
