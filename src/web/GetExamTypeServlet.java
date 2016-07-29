@@ -31,8 +31,7 @@ public class GetExamTypeServlet extends HttpServlet {
 	public void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		TypeService typeService = BasicFactory.getFactory().getService(TypeService.class);
-		List<ExamType> list = (List<ExamType>) request.getSession().getAttribute("result");
-		list = typeService.getType(request.getParameterMap());
+		List<ExamType> list = typeService.getType(request.getParameterMap());
 		JSONArray jsonArray = JSONArray.fromObject(list,JsonUtil.getConfig());
 		response.setContentType("text/json");
 		response.getWriter().write(jsonArray.toString());

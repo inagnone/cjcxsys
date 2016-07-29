@@ -25,6 +25,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   	<script type="text/javascript" src="easyui/js/jquery.min.js"></script>
   	<script type="text/javascript" src="easyui/js/jquery.easyui.min.js"></script>
   	<script type="text/javascript" src="easyui/js/datagrid-scrollview.js"></script>
+  	<script src="js/data-grid.js"></script>
+	<script src="js/helloword.js"></script>
+	<script src="js/funtion.js"></script>
   </head>
   
   <body>		
@@ -54,8 +57,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	  				<tr>
 	  					<td>
 	  						<span>考试类别:</span>
-							<select id="typeid" name="typeid"  panelHeight="auto" style="width:200px">
-								<option value="11">全国水利安全生产标准化考试</option>
+							<select id="examtype" name="examtype"  panelHeight="auto" style="width:200px">
 							</select>
 	  					</td>
 	  				</tr>
@@ -114,12 +116,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     			</table>
 		</div>
 </div>
-
-
-
-<script src="js/data-grid.js"></script>
-<script src="js/helloword.js"></script>
-<script src="js/funtion.js"></script>
 
 <div id="addstu" class="easyui-window" title="添加类型" data-options="modal:true,closed:true,iconCls:'icon-save'" style="width:750px;height:500px;padding:10px;">
 	<form id="form">
@@ -185,8 +181,22 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		</table>
 	</form>
 </div>
-
 <script type="text/javascript">
+$(document).ready(function(){
+	 $.ajax({
+		   type: "POST",
+		   url: "GetExamTypeServlet",
+		   success: function(types){
+		     $("#newexamname  option").remove();
+		     $.each(types,function(i,item){
+		     	 $("<option></option>")
+                   .val(item["typeid"])
+                   .text(item["examname"])
+                   .appendTo($("#examtype"));
+		     });
+		   }
+	   });
+});
 	//添加
 	function add(){
 		clearForm('#form');
@@ -195,7 +205,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		   url: "GetExamTypeServlet",
 		   success: function(types){
 		     $("#newexamname  option").remove();
-		     var typearray = eval(types);
 		     $.each(types,function(i,item){
 		     	 $("<option></option>")
                     .val(item["typeid"])
@@ -215,7 +224,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			   url: "GetExamTypeServlet",
 			   success: function(types){
 			     $("#newexamname  option").remove();
-			     var typearray = eval(types);
 			     $.each(types,function(i,item){
 			     	 $("<option></option>")
 	                    .val(item["typeid"])

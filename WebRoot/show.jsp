@@ -12,11 +12,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     
     <title>全国水利安全远程教育培训平台证书查询系统</title>
     
-	<meta http-equiv="pragma" content="no-cache">
-	<meta http-equiv="cache-control" content="no-cache">
 	<meta http-equiv="expires" content="0">    
-	<meta http-equiv="keywords" content="keyword1,keyword2,keyword3">
-	<meta http-equiv="description" content="This is my page">
 	
 	<link rel="stylesheet" type="text/css" href="easyui/css/demo.css">
 	<link rel="stylesheet" type="text/css" href="easyui/css/easyui.css">
@@ -29,12 +25,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   	<script type="text/javascript" src="easyui/js/jquery.min.js"></script>
   	<script type="text/javascript" src="easyui/js/jquery.easyui.min.js"></script>
   	<script type="text/javascript" src="easyui/js/datagrid-scrollview.js"></script>
-	<!-- 
-		<script>
-			var name = '${sessionScope.user.name }';
-			setInterval("jnkc.innerHTML=name+',欢迎您!'+' '+new Date().toLocaleDateString()+' 星期'+'日一二三四五六'.charAt(new Date().getDay());",1000);
-		</script>
-	 -->
   </head>
   
   <body>

@@ -19,7 +19,8 @@ public class StudentDaoImp implements StudentDao {
 	@Override
 	public List<Student> getStudents(Map<String, String[]> map) {
 		// TODO Auto-generated method stub
-		StringBuilder sql = new StringBuilder("select cj.id,name,company,personid,examname,examtype,exampc,sgqycj,sgdwcj,xmfrcj,zynlcj,examtime from cj left join examtype on cj.examtype = examtype.typeid where");
+		StringBuilder sql = new StringBuilder("select cj.id,name,company,personid,examname,examtype,exampc,sgqycj,sgdwcj,"
+				+ "xmfrcj,zynlcj,examtime from cj left join examtype on cj.examtype = examtype.typeid where");
 		if(map.get("name") != null && map.get("name")[0] != null && !map.get("name")[0].equals("")){
 			sql.append(" name="+map.get("name")[0]+" and ");
 		}
