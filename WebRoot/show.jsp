@@ -32,8 +32,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   <div class="header">
 	<div class="header-body">
 	    <div class="header-top">
-	       <a href="http://slaqpx.hhu.edu.cn" target="_self" id="index">返回首页</a>&nbsp;&nbsp;
-		   加入收藏	    
+	       <a href="http://slaqpx.hhu.edu.cn" target="_self" id="index"><img src="img/login1.png"></img></a>&nbsp;&nbsp;
+		   <img src="img/return.png"></img>
 		 </div>
 		<div class="brand"><img src="img/logo.png" width="700" height="65">
 		  
