@@ -38,6 +38,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		</div>
 		<!-- 查询参数文本框 -->
 	  	<div id="toolbar" style="padding:3px">
+	  	<c:if test="${sessionScope.user != null }">
 	  		<div> 
 		  		<div>
 		  		 		<a class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="$('#addtype').window('open')">添加</a>	
@@ -45,7 +46,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	  		 		<hr>
 	  		 	</div>	
   		 	</div>
-  		 	
+  		 </c:if>	
   		 	<table style="font-size: 12; border-collapse:   separate;   border-spacing:   5px;">
 	  			<tbody>
 	  				<tr>

@@ -43,12 +43,14 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	  	<div id="toolbar" style="padding:3px">
 	  		<div> 
 		  		<div>
-		  		 		<a href="ExportExcel" class="easyui-linkbutton" iconCls="icon-save" plain="true" >导出所有查询结果到excel文件</a>
-		  		 		<a class="easyui-linkbutton" iconCls="icon-save" plain="true" onclick="getstu()">导出选中结果到excel文件</a>	
-		  		 		<a class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="add()">添加</a>	
-		  		 		<a class="easyui-linkbutton" iconCls="icon-edit"  plain="true" onclick="edit()">修改</a>
-		  		 		<a class="easyui-linkbutton" iconCls="icon-cancel"  plain="true" onclick="deletes()">删除</a>
-	  		 		<hr>
+		  		 		<c:if test="${sessionScope.user != null }">
+		  		 			<a href="ExportExcel" class="easyui-linkbutton" iconCls="icon-save" plain="true" >导出所有查询结果到excel文件</a>
+		  		 			<a class="easyui-linkbutton" iconCls="icon-save" plain="true" onclick="getstu()">导出选中结果到excel文件</a>	
+			  		 		<a class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="add()">添加</a>	
+			  		 		<a class="easyui-linkbutton" iconCls="icon-edit"  plain="true" onclick="edit()">修改</a>
+			  		 		<a class="easyui-linkbutton" iconCls="icon-cancel"  plain="true" onclick="deletes()">删除</a>
+	  		 				<hr>
+	  		 			</c:if>
 	  		 	</div>	
   		 	</div>
   		 	

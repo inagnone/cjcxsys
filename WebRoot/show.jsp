@@ -13,7 +13,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     <title>全国水利安全远程教育培训平台证书查询系统</title>
     
 	<meta http-equiv="expires" content="0">    
-	
+	<meta http-equiv="pragma" content="no-cache" />
 	<link rel="stylesheet" type="text/css" href="easyui/css/demo.css">
 	<link rel="stylesheet" type="text/css" href="easyui/css/easyui.css">
 	<link rel="stylesheet" type="text/css" href="easyui/css/icon.css">
@@ -32,8 +32,10 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   <div class="header">
 	<div class="header-body">
 	    <div class="header-top">
-	       <a href="http://slaqpx.hhu.edu.cn" target="_self" id="index"><img src="img/login1.png"></img></a>&nbsp;&nbsp;
-		   <img src="img/return.png"></img>
+	    <c:if test="${sessionScope.user == null }">
+	       <a href="${basepath }/Certificate/login.jsp" target="_self" id="index"><img src="img/login1.png"></img></a>&nbsp;&nbsp;
+		</c:if>
+		   <a href="http://slaqpx.hhu.edu.cn"><img src="img/return.png"></img></a>
 		 </div>
 		<div class="brand"><img src="img/logo.png" width="700" height="65">
 		  
@@ -41,12 +43,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	</div>
 	<div class="header-color-bottom"></div>
 </div>
-	
-		
 	<div class="content" style="height: 72.5%;">
-		
-		
-	    
 	    <div class="content-body " oncontextmenu="return false" ondragstart="return false" onselectstart ="return false" onselect="document.selection.empty()"
  oncopy="document.selection.empty()" onbeforecopy="return false" onmouseup="document.selection.empty()">
 	      	
@@ -61,9 +58,11 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 						    <li class="dropdown">
 						      <a href="${basepath }/Certificate" data-toggle="dropdown">证书查询</a>						      
 						    </li>
-						    <li class="dropdown">
-						      <a onClick="return confirm('确认退出登录？')" href="new/LogoutServlet" data-toggle="dropdown" >注销</a>						      
-						    </li>
+						    <c:if test="${sessionScope.user != null }">
+							    <li class="dropdown">
+							      <a onClick="return confirm('确认退出登录？')" href="LogOutServlet" data-toggle="dropdown" >注销</a>						      
+							    </li>
+						    </c:if>
 						  </ul>									
 	      	</div>	
       		<div class="search-block" style="width: 80%">
