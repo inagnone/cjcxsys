@@ -37,7 +37,7 @@ public class UpdateTypeServlet extends HttpServlet {
 		try {
 			BeanUtils.populate(type, request.getParameterMap());
 			service.updateTypename(type);
-			response.sendRedirect("SearchType.jsp");
+			response.sendRedirect("../SearchType.jsp");
 		} catch (IllegalAccessException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

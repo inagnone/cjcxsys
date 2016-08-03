@@ -1,13 +1,2 @@
-/MANIFEST.MF
-/META-INF
-/annotation
-/c3p0-config.xml
-/config.properties
 /dao
-/domain
-/factory
-/filter
-/merchantInfo.properties
-/service
-/util
 /web

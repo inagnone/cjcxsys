@@ -26,7 +26,7 @@ import domain.Student;
 import domain.User;
 import factory.BasicFactory;
 
-public class LoadExcel extends HttpServlet {
+public class LoadExcelServlet extends HttpServlet {
 
 	/**
 	 * The doGet method of the servlet. <br>

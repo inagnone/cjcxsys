@@ -32,7 +32,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   <div class="header">
 	<div class="header-body">
 	    <div class="header-top">
-	    <c:if test="${sessionScope.user == null }">
+	    <c:if test="${sessionScope.username == null }">
 	       <a href="${basepath }/Certificate/login.jsp" target="_self" id="index"><img src="img/login1.png"></img></a>&nbsp;&nbsp;
 		</c:if>
 		   <a href="http://slaqpx.hhu.edu.cn"><img src="img/return.png"></img></a>
@@ -58,7 +58,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 						    <li class="dropdown">
 						      <a href="${basepath }/Certificate" data-toggle="dropdown">证书查询</a>						      
 						    </li>
-						    <c:if test="${sessionScope.user != null }">
+						    <c:if test="${sessionScope.username != null }">
 							    <li class="dropdown">
 							      <a onClick="return confirm('确认退出登录？')" href="LogOutServlet" data-toggle="dropdown" >注销</a>						      
 							    </li>

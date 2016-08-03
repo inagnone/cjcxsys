@@ -34,7 +34,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<div class="content" style="height: 100%;">
 		<div class="content-color-top">
 	    	<div class="brand" ><img src="img/search.png" width="135" height="50" >
-			    <c:if test="${sessionScope.user != null }">
+			    <c:if test="${sessionScope.username != null }">
 					<h2 class="time" id="jnkc" style="position: absolute;top: 15px;margin-left: 300px;color: white;"></h2>
 			    </c:if>
 	    	</div>
@@ -43,7 +43,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	  	<div id="toolbar" style="padding:3px">
 	  		<div> 
 		  		<div>
-		  		 		<c:if test="${sessionScope.user != null }">
+		  		 		<c:if test="${sessionScope.username != null }">
 		  		 			<a href="ExportExcel" class="easyui-linkbutton" iconCls="icon-save" plain="true" >导出所有查询结果到excel文件</a>
 		  		 			<a class="easyui-linkbutton" iconCls="icon-save" plain="true" onclick="getstu()">导出选中结果到excel文件</a>	
 			  		 		<a class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="add()">添加</a>	
@@ -213,7 +213,7 @@ $(document).ready(function(){
                     .text(item["examname"])
                     .appendTo($("#newexamname"));
 		     });
-		    $('#form').attr('action','AddStuServlet');
+		    $('#form').attr('action','Servlet/AddStu');
 			$('#addstu').window('open');
 		   }
 	   });
@@ -251,7 +251,7 @@ $(document).ready(function(){
 				xmfrcj:stus[0].xmfrcj,
 				zynlcj:stus[0].zynlcj
 			});
-			$('#form').attr('action','UpdateStuServlet');
+			$('#form').attr('action','Servlet/UpdateStu');
 			jsSelectItemByValue(document.getElementById("newexamname"), stus[0].examtype);
 			$('#addstu').window('open');
 		}
@@ -266,7 +266,7 @@ $(document).ready(function(){
 		if (rows){
 			$.messager.confirm('Confirm','您确认删除证书吗?',function(r){
 				if (r){
-					$.post("DeleteStuServlet",{id:ids.join(',')},function(result){
+					$.post("Servlet/DeleteStu",{id:ids.join(',')},function(result){
 						if (result.success){
 							$('#dg').datagrid('reload');	// reload the user data
 						} else {

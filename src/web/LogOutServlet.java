@@ -27,11 +27,10 @@ public class LogOutServlet extends HttpServlet {
 		if(request.getSession(false)!=null){
 			ServletContext context = request.getSession().getServletContext();
 			ServletContext context2 = context.getContext("/Certificate");
-			HttpSession session = (HttpSession) context2.getAttribute("session");
-			if(session != null){
-				session.invalidate();
+			String username = (String) context2.getAttribute("username");
+			if(username != null){
+				context2.removeAttribute("username");
 			}
-			context2.removeAttribute("session");
 			request.getSession().invalidate();
 		}
 		response.sendRedirect("index.jsp");

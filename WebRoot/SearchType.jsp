@@ -38,7 +38,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		</div>
 		<!-- 查询参数文本框 -->
 	  	<div id="toolbar" style="padding:3px">
-	  	<c:if test="${sessionScope.user != null }">
+	  	<c:if test="${sessionScope.username != null }">
 	  		<div> 
 		  		<div>
 		  		 		<a class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="$('#addtype').window('open')">添加</a>	
@@ -93,7 +93,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 <script src="js/funtion.js"></script>
 
 <div id="addtype" class="easyui-window" title="添加类型" data-options="modal:true,closed:true,iconCls:'icon-save'" style="width:370px;height:150px;padding:10px;">
-	<form action="addType" id="type" method="post">
+	<form action="Servlet/addType" id="type" method="post">
 		<table style="border-spacing:   10px;">
 			<tr>
 				<td>
@@ -122,7 +122,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 </div>
 
 <div id="updatetype" class="easyui-window" title="添加类型" data-options="modal:true,closed:true,iconCls:'icon-save'" style="width:370px;height:150px;padding:10px;">
-	<form action="UpdateTypeServlet" id="type">
+	<form action="Servlet/UpdateType" id="type">
 		<input type="hidden" id="newtypeid" name="typeid" value="">
 		<table style="border-collapse:   separate; border-spacing:   10px;">
 			<tr>

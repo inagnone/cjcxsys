@@ -21,14 +21,24 @@
 	<filter-name>EncodeFilter</filter-name>
 	<url-pattern>/*</url-pattern>
   </filter-mapping>
+  
   <filter>
-  	<filter-name>LoginFilter</filter-name>
+    <filter-name>LoginFilter</filter-name>
   	<filter-class>filter.LoginFilter</filter-class>
   </filter>
   <filter-mapping>
   	<filter-name>LoginFilter</filter-name>
   	<url-pattern>/*</url-pattern>
   </filter-mapping>
+  <filter>
+  	<filter-name>LogFilter</filter-name>
+  	<filter-class>filter.LogFilter</filter-class>
+  </filter>
+  <filter-mapping>
+  	<filter-name>LogFilter</filter-name>
+  	<url-pattern>/Servlet/*</url-pattern>
+  </filter-mapping>
+  
   <servlet>
     <description>This is the description of my J2EE component</description>
     <display-name>This is the display name of my J2EE component</display-name>
@@ -80,7 +90,7 @@
   <servlet>
     <description>This is the description of my J2EE component</description>
     <display-name>This is the display name of my J2EE component</display-name>
-    <servlet-name>LoadExcel</servlet-name>
+    <servlet-name>LoadExcelServlet</servlet-name>
     <servlet-class>web.LoadExcel</servlet-class>
   </servlet>
   <servlet>
@@ -123,31 +133,31 @@
   </servlet-mapping>
   <servlet-mapping>
     <servlet-name>addType</servlet-name>
-    <url-pattern>/addType</url-pattern>
+    <url-pattern>/Servlet/addType</url-pattern>
   </servlet-mapping>
   <servlet-mapping>
     <servlet-name>UpdateTypeServlet</servlet-name>
-    <url-pattern>/UpdateTypeServlet</url-pattern>
+    <url-pattern>/Servlet/UpdateType</url-pattern>
   </servlet-mapping>
   <servlet-mapping>
     <servlet-name>AddStuServlet</servlet-name>
-    <url-pattern>/AddStuServlet</url-pattern>
+    <url-pattern>/Servlet/AddStu</url-pattern>
   </servlet-mapping>
   <servlet-mapping>
     <servlet-name>UpdateStuServlet</servlet-name>
-    <url-pattern>/UpdateStuServlet</url-pattern>
+    <url-pattern>/Servlet/UpdateStu</url-pattern>
   </servlet-mapping>
   <servlet-mapping>
     <servlet-name>DeleteStuServlet</servlet-name>
-    <url-pattern>/DeleteStuServlet</url-pattern>
+    <url-pattern>/Servlet/DeleteStu</url-pattern>
   </servlet-mapping>
   <servlet-mapping>
     <servlet-name>ExportExcel</servlet-name>
     <url-pattern>/ExportExcel</url-pattern>
   </servlet-mapping>
   <servlet-mapping>
-    <servlet-name>LoadExcel</servlet-name>
-    <url-pattern>/LoadExcel</url-pattern>
+    <servlet-name>LoadExcelServlet</servlet-name>
+    <url-pattern>/Servlet/LoadExcel</url-pattern>
   </servlet-mapping>
   <servlet-mapping>
     <servlet-name>AuthImage</servlet-name>

@@ -46,17 +46,16 @@ public class LoginFilter implements Filter {
 //	  		<%} %>
 //	  	<%} %>
 		
-		
 		ServletContext context = req.getSession().getServletContext().getContext("/Certificate");
 		if(context != null){
-			HttpSession session  = (HttpSession)context.getAttribute("session");
-			if(session != null){
-				req.getSession().setAttribute("user", session.getAttribute("user"));
+			String username  = (String) context.getAttribute("username");
+			if(username != null && !username.equals("")){
+				req.getSession().setAttribute("username", username);
 			}else{
-				req.getSession().removeAttribute("user");
+				req.getSession().removeAttribute("username");
 			}
 		}else{
-			req.getSession().removeAttribute("user");
+			req.getSession().removeAttribute("username");
 		}
 		chain.doFilter(request, response);	
 	}

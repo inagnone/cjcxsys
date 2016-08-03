@@ -3,19 +3,19 @@ package dao;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import org.apache.commons.dbutils.QueryRunner;
 import org.apache.commons.dbutils.handlers.BeanHandler;
 import org.apache.commons.dbutils.handlers.BeanListHandler;
-
-import com.sun.org.apache.regexp.internal.REUtil;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 import util.TransactionManager;
 import domain.Student;
 
 public class StudentDaoImp implements StudentDao {
-
+	private Log log = LogFactory.getLog(this.getClass());
+	
 	@Override
 	public List<Student> getStudents(Map<String, String[]> map) {
 		// TODO Auto-generated method stub
@@ -45,6 +45,7 @@ public class StudentDaoImp implements StudentDao {
 		try {
 			QueryRunner runner = new QueryRunner(TransactionManager.getSource());
 			runner.update(sql,stu.getName(),stu.getCompany(),stu.getPersonid(),stu.getExamtype(),stu.getExampc(),stu.getSgqycj(),stu.getSgdwcj(),stu.getXmfrcj(),stu.getZynlcj(),stu.getExamtime());
+			log.info("添加学生"+stu.getName());
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -58,6 +59,7 @@ public class StudentDaoImp implements StudentDao {
 		try {
 			QueryRunner runner = new QueryRunner(TransactionManager.getSource());
 			runner.update(sql,id);
+			log.info("删除学生");
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -72,6 +74,7 @@ public class StudentDaoImp implements StudentDao {
 		try {
 			QueryRunner runner = new QueryRunner(TransactionManager.getSource());
 			runner.update(sql,stu.getName(),stu.getCompany(),stu.getPersonid(),stu.getExamtype(),stu.getExampc(),stu.getSgqycj(),stu.getSgdwcj(),stu.getXmfrcj(),stu.getZynlcj(),stu.getId());
+			log.info("更新学生"+stu.getName());
 			return stu;
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -112,6 +115,7 @@ public class StudentDaoImp implements StudentDao {
 				params[i][7] = stus.get(i).getXmfrcj();
 				params[i][8] = stus.get(i).getZynlcj();
 				params[i][9] = stus.get(i).getExamtime();
+				log.info("添加学生"+stus.get(i).getName());
 			}
 			return runner.batch(sql, params).length;
 		} catch (SQLException e) {
