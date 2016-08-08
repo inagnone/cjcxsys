@@ -16,6 +16,7 @@ import org.apache.poi.hssf.usermodel.HSSFCellStyle;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.Cell;
 
 import util.ExcelUtil;
 import dao.StudentDao;
@@ -95,7 +96,7 @@ public class StudentServiceImp implements StudentService {
 			nextrow.createCell(3).setCellValue(stu.getPersonid());
 			if(stu.getExamname() != null)
 			nextrow.createCell(4).setCellValue(stu.getExamname());
-			if(stu.getExampc() != 0)
+			if(stu.getExampc() != null)
 			nextrow.createCell(5).setCellValue(stu.getExampc());
 			if(stu.getExamtime() != null)
 			nextrow.createCell(6).setCellValue(stu.getExamtime().toString());
@@ -155,6 +156,9 @@ public class StudentServiceImp implements StudentService {
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		} catch (RuntimeException e) {
+			// TODO: handle exception
+			throw new RuntimeException(e.getMessage());
 		}
 		return 0;
 	}
@@ -171,7 +175,7 @@ public class StudentServiceImp implements StudentService {
 		if(title.getCell(1) == null || !title.getCell(1).getStringCellValue().contains("姓名")){
 			throw new RuntimeException("excel文件格式与模板不一致:第二列应是姓名列");
 		}
-		if(title.getCell(2) == null || !title.getCell(2).getStringCellValue().contains("工作单位")){
+		if(title.getCell(2) == null || !title.getCell(2).getStringCellValue().contains("单位")){
 			throw new RuntimeException("excel文件格式与模板不一致:第三列应是工作单位列");
 		}
 		if(title.getCell(3) == null || !title.getCell(3).getStringCellValue().contains("身份证号")){
@@ -186,16 +190,16 @@ public class StudentServiceImp implements StudentService {
 		if(title.getCell(6) == null || !title.getCell(6).getStringCellValue().contains("考试时间")){
 			throw new RuntimeException("excel文件格式与模板不一致:第七列应是考试时间列");
 		}
-		if(title.getCell(7) == null || !title.getCell(7).getStringCellValue().contains("施工企业成绩")){
+		if(title.getCell(7) == null || !title.getCell(7).getStringCellValue().contains("施工")){
 			throw new RuntimeException("excel文件格式与模板不一致:第八列应是施工企业成绩列");
 		}
-		if(title.getCell(8) == null || !title.getCell(8).getStringCellValue().contains("水管单位成绩")){
+		if(title.getCell(8) == null || !title.getCell(8).getStringCellValue().contains("水管")){
 			throw new RuntimeException("excel文件格式与模板不一致:第九列应是水管单位成绩列");
 		}
-		if(title.getCell(9) == null || !title.getCell(9).getStringCellValue().contains("项目法人成绩")){
+		if(title.getCell(9) == null || !title.getCell(9).getStringCellValue().contains("法人")){
 			throw new RuntimeException("excel文件格式与模板不一致:第十列应是项目法人成绩列");
 		}
-		if(title.getCell(10) == null || !title.getCell(10).getStringCellValue().contains("专业能力成绩")){
+		if(title.getCell(10) == null || !title.getCell(10).getStringCellValue().contains("专业能力")){
 			throw new RuntimeException("excel文件格式与模板不一致:第十一列应是专业能力成绩列");
 		}
 		
@@ -215,69 +219,129 @@ public class StudentServiceImp implements StudentService {
 					if(hssfRow.getCell(1) == null|| ExcelUtil.getcellvalue(hssfRow.getCell(1)) == null)break;
 				}
 				Student stu = new Student();
+				String index = null;
+				HSSFCell cell0 = hssfRow.getCell(0);
+				if(cell0 != null){
+					index = ExcelUtil.getcellvalue(cell0);
+				}
 				
 				//姓名
-				HSSFCell cell1 = hssfRow.getCell(1);
-				if(cell1 != null){
-					String name = ExcelUtil.getcellvalue(cell1);
-					stu.setName(name);							
+				try{
+					HSSFCell cell1 = hssfRow.getCell(1);
+					if(cell1 != null){
+						String name = ExcelUtil.getcellvalue(cell1);
+						stu.setName(name);
+					}
+				}catch (Exception e){
+					throw new RuntimeException("第"+index+"行姓名的值不合规范");
 				}
 				//工作单位
-				HSSFCell cell2 = hssfRow.getCell(2);
-				if(cell2 != null){
-					String company = ExcelUtil.getcellvalue(cell2);
-					stu.setCompany(company);							
+				try{
+					HSSFCell cell2 = hssfRow.getCell(2);
+					if(cell2 != null){
+						String company = ExcelUtil.getcellvalue(cell2);
+						stu.setCompany(company);							
+					}
+				}catch (Exception e){
+					throw new RuntimeException("第"+index+"行工作单位的值不合规范");
 				}
 				//身份证
-				HSSFCell cell3 = hssfRow.getCell(3);
-				String pid;
-				if(cell3 != null){
-					String id = ExcelUtil.getcellvalue(cell3);
-					pid = id.trim();	
-					
-					if(pid.length()>18){
-						pid = pid.substring(0, 18);
+				try {
+					HSSFCell cell3 = hssfRow.getCell(3);
+					String pid;
+					if(cell3 != null){
+						String id = ExcelUtil.getcellvalue(cell3);
+						pid = id.trim();	
+						
+						if(pid.length()>18){
+							pid = pid.substring(0, 18);
+						}
+						stu.setPersonid(pid);
 					}
-					stu.setPersonid(pid);
+				}catch (Exception e){
+					throw new RuntimeException("第"+index+"行身份证的值不合规范");
 				}
 				//考试类型
-				HSSFCell cell4 = hssfRow.getCell(4);
-				if(cell4 != null){
-					String examtype = ExcelUtil.getcellvalue(cell4);
-					if(examtype.length()>2){
-						examtype = examtype.substring(0,2);
+				try{
+					HSSFCell cell4 = hssfRow.getCell(4);
+					if(cell4 != null){
+						String examtype = ExcelUtil.getcellvalue(cell4);
+						if(examtype.length()>2){
+							examtype = examtype.substring(0,2);
+						}
+						stu.setExamtype(examtype);							
 					}
-					stu.setExamtype(examtype);							
+				}catch (Exception e){
+					throw new RuntimeException("第"+index+"行考试类型的值不合规范");
 				}
 				//考试批次
-				HSSFCell cell5 = hssfRow.getCell(5);
-				if(cell5 != null){
-					stu.setExampc((int) cell5.getNumericCellValue());							
+				try {
+					HSSFCell cell5 = hssfRow.getCell(5);
+					if(cell5 != null){
+						String exampc = ExcelUtil.getcellvalue(cell5);
+						if(exampc != null && exampc.equals("")){
+							stu.setExampc(exampc);							
+						}
+					}
+				} catch (Exception e){
+					throw new RuntimeException("第"+index+"行考试批次的值不合规范");
 				}
 				//考试时间
-				HSSFCell cell6 = hssfRow.getCell(6);
-				if(cell6 != null && !(val = (ExcelUtil.getCellDate(cell6))).equals("")){
-					stu.setExamtime(java.sql.Date.valueOf(val));
+				try {
+					HSSFCell cell6 = hssfRow.getCell(6);
+					if(cell6 != null && !(val = (ExcelUtil.getCellDate(cell6))).equals("")){
+						stu.setExamtime(java.sql.Date.valueOf(val));
+					}
+				}catch (Exception e){
+					throw new RuntimeException("第"+index+"行考试时间的值不合规范");
 				}
 				//施工企业成绩
-				HSSFCell cell7 = hssfRow.getCell(7);
-				if(cell7 != null){
-					stu.setSgqycj((int) cell7.getNumericCellValue());
+				try {
+					HSSFCell cell7 = hssfRow.getCell(7);
+					if(cell7 != null){
+						String value = ExcelUtil.getcellvalue(cell7);
+						if(value != null){
+							stu.setSgqycj(Float.valueOf(value));
+						}
+					}
+				} catch (Exception e){
+					throw new RuntimeException("第"+index+"行施工单位的值不合规范");
 				}
 				//水管单位成绩
-				HSSFCell cell8 = hssfRow.getCell(8);
-				if(cell8 != null ){
-					stu.setSgdwcj((int) cell8.getNumericCellValue());
+				try{
+					HSSFCell cell8 = hssfRow.getCell(8);
+					if(cell8 != null){
+						String value = ExcelUtil.getcellvalue(cell8);
+						if(value != null){
+							stu.setSgdwcj(Float.valueOf(value));
+						}
+					}
+				}catch (Exception e){
+					throw new RuntimeException("第"+index+"行水管单位的值不合规范");
 				}
 				//项目法人成绩
-				HSSFCell cell9 = hssfRow.getCell(9);
-				if(cell9 != null ){
-					stu.setXmfrcj((int) cell9.getNumericCellValue());
+				try {
+					HSSFCell cell9 = hssfRow.getCell(9);
+					if(cell9 != null){
+						String value = ExcelUtil.getcellvalue(cell9);
+						if(value != null){
+							stu.setXmfrcj(Float.valueOf(value));
+						}
+					}
+				} catch (Exception e){
+					throw new RuntimeException("第"+index+"行项目法人成绩的值不合规范");
 				}
 				//专业能力成绩
-				HSSFCell cell10 = hssfRow.getCell(10);
-				if(cell10 != null ){
-					stu.setZynlcj((int) cell10.getNumericCellValue());
+				try {
+					HSSFCell cell10 = hssfRow.getCell(10);
+					if(cell10 != null){
+						String value = ExcelUtil.getcellvalue(cell10);
+						if(value != null){
+							stu.setSgqycj(Float.valueOf(value));
+						}
+					}
+				}catch (Exception e){
+					throw new RuntimeException("第"+index+"行专业能力的值不合规范");
 				}
 				page.add(stu);
 			}

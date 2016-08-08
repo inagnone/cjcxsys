@@ -22,10 +22,10 @@ public class StudentDaoImp implements StudentDao {
 		StringBuilder sql = new StringBuilder("select cj.id,name,company,personid,examname,examtype,exampc,sgqycj,sgdwcj,"
 				+ "xmfrcj,zynlcj,examtime from cj left join examtype on cj.examtype = examtype.typeid where");
 		if(map.get("name") != null && map.get("name")[0] != null && !map.get("name")[0].equals("")){
-			sql.append(" name="+map.get("name")[0]+" and ");
+			sql.append(" name='"+map.get("name")[0]+"' and ");
 		}
 		if(map.get("personid") != null && map.get("personid")[0] != null && !map.get("personid")[0].equals("")){
-			sql.append(" personid="+map.get("personid")[0]+" and ");
+			sql.append(" personid='"+map.get("personid")[0]+"' and ");
 		}
 		sql.delete(sql.length()-5, sql.length());
 		try {

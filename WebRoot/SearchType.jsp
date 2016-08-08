@@ -71,7 +71,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	        		data-options="
 	        			rownumbers:true,
 	        			sorter:function(a,b){return a.Name == b.Name ? 0 : a.Name > b.Name ? 1 : -1;},
-						url:'GetExamTypeServlet',
+						url:'Servlet/GetExamTypeServlet',
 						autoRowHeight:true,
 						fitColumns:true,
 						remoteSort:false,

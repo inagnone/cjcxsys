@@ -44,7 +44,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	  		<div> 
 		  		<div>
 		  		 		<c:if test="${sessionScope.username != null }">
-		  		 			<a href="ExportExcel" class="easyui-linkbutton" iconCls="icon-save" plain="true" >导出所有查询结果到excel文件</a>
+		  		 			<a href="Servlet/ExportExcel" class="easyui-linkbutton" iconCls="icon-save" plain="true" >导出所有查询结果到excel文件</a>
 		  		 			<a class="easyui-linkbutton" iconCls="icon-save" plain="true" onclick="getstu()">导出选中结果到excel文件</a>	
 			  		 		<a class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="add()">添加</a>	
 			  		 		<a class="easyui-linkbutton" iconCls="icon-edit"  plain="true" onclick="edit()">修改</a>
@@ -72,18 +72,25 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	  						<span>身份证号:</span>
 		    				<input id="personid" class="easyui-textbox" style="line-height:26px;border:1px solid #ccc">
 	  					</td>
+	  					<c:if test="${sessionScope.username != null }">
+		  					<td>
+		  						<a  class="easyui-linkbutton" plain="true" onclick="doSearch2()" iconCls="icon-search">查询</a>
+		  					</td>
+		  				</c:if>
 	  				</tr>
 	  				<tr>
-	  					<td>
-	  						<span>验证码:</span>
-	  						<input id="validcode" class="easyui-textbox" style="line-height:26px;border:1px solid #ccc;width:200px">
-	  					</td>	
-	  					<td>
-	  						<img id="valid" src="AuthImage" onclick="changeImg(this)" style="cursor: pointer;"/>
-	  					</td>
-	  					<td>
-	  						<a  class="easyui-linkbutton" plain="true" onclick="doSearch()" iconCls="icon-search">搜索</a>
-	  					</td>
+	  					<c:if test="${sessionScope.username == null }">
+		  					<td>
+		  						<span>验证码:</span>
+		  						<input id="validcode" class="easyui-textbox" style="line-height:26px;border:1px solid #ccc;width:200px">
+		  					</td>	
+		  					<td>
+		  						<img id="valid" src="AuthImage" onclick="changeImg(this)" style="cursor: pointer;"/>
+		  					</td>
+		  					<td>
+		  						<a  class="easyui-linkbutton" plain="true" onclick="doSearch()" iconCls="icon-search">查询</a>
+		  					</td>
+		  				</c:if>
 	  				</tr>
 	  			</tbody>
 	  		</table>
@@ -171,7 +178,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			</tr>
 		</table>
 	</form>
-	<form action="LoadExcel" enctype="multipart/form-data" method="post">
+	<form action="Servlet/LoadExcel" enctype="multipart/form-data" method="post">
 		<table width="100%">
 			<tr>
 				<td>
@@ -187,7 +194,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 $(document).ready(function(){
 	 $.ajax({
 		   type: "POST",
-		   url: "GetExamTypeServlet",
+		   url: "Servlet/GetExamTypeServlet",
 		   success: function(types){
 		     $("#newexamname  option").remove();
 		     $.each(types,function(i,item){
@@ -204,7 +211,7 @@ $(document).ready(function(){
 		clearForm('#form');
 	   $.ajax({
 		   type: "POST",
-		   url: "GetExamTypeServlet",
+		   url: "Servlet/GetExamTypeServlet",
 		   success: function(types){
 		     $("#newexamname  option").remove();
 		     $.each(types,function(i,item){
@@ -223,7 +230,7 @@ $(document).ready(function(){
 		clearForm('#form');
 		   $.ajax({
 			   type: "POST",
-			   url: "GetExamTypeServlet",
+			   url: "Servlet/GetExamTypeServlet",
 			   success: function(types){
 			     $("#newexamname  option").remove();
 			     $.each(types,function(i,item){
@@ -320,6 +327,15 @@ $(document).ready(function(){
 			   }
 		   });
 	};
+	
+	function doSearch2(){
+		//获取搜索条件
+    	$('#dg').datagrid('load',{  
+	   		search: true,
+	    	name: $('#name').val(),
+	    	personid: $('#personid').val(),
+   		});
+	}
 </script>
 <!-- 信息提示窗口 -->
 <c:if test="${requestScope.msg != null }">

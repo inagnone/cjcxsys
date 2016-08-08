@@ -80,14 +80,14 @@ public class LoadExcelServlet extends HttpServlet {
 						String filetype = realname.substring(realname.indexOf(".")+1);
 						if(!filetype.equals("xls")){
 							request.setAttribute("msg", "请用提供的模板保存证书数据，格式只允许.xls）");
-							request.getRequestDispatcher("SearchStu.jsp").forward(request, response);
+							request.getRequestDispatcher("../SearchStu.jsp").forward(request, response);
 							return ;
 						}
 						url = "/WEB-INF/upload/excel";						
 						url +="/"+realname;
 					}else{
 						request.setAttribute("msg", "请选择正确类型的文件（成绩数据：.xls）");
-						request.getRequestDispatcher("SearchStu.jsp").forward(request, response);
+						request.getRequestDispatcher("../SearchStu.jsp").forward(request, response);
 						return ;
 					}
 					
@@ -109,21 +109,22 @@ public class LoadExcelServlet extends HttpServlet {
 				String realPath = request.getServletContext().getRealPath(url);
 				 seccessnum = service.LoadExcel(realPath,result);				
 			}				
-			response.sendRedirect("SearchStu.jsp?msg=success_"+seccessnum);
+			response.sendRedirect("../SearchStu.jsp?msg=success_"+seccessnum);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 				
-				if(!result.exists()){
+				if(!result.exists() || result.length()==0){
 					if(e.getCause() != null){
 						Throwable cause = e.getCause();
 						while(cause.getCause() != null){
 							cause = cause.getCause();
 						}
 						request.setAttribute("msg", cause.getMessage());
-						request.getRequestDispatcher("adddiploma.jsp").forward(request, response);
+						request.getRequestDispatcher("../SearchStu.jsp").forward(request, response);
 						return ;
 					}
 				}
+				
 				response.setHeader("Content-Disposition", "attachment;filename="+URLEncoder.encode("result.txt","utf-8"));
 				response.setContentType(this.getServletContext().getMimeType("result.txt"));//MIME类型
 				InputStream in = new FileInputStream(result);

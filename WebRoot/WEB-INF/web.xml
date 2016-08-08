@@ -23,21 +23,26 @@
   </filter-mapping>
   
   <filter>
+  	<filter-name>AutoLoginFilter</filter-name>
+  	<filter-class>filter.Autologin</filter-class>
+  </filter>
+  <filter-mapping>
+  	<filter-name>AutoLoginFilter</filter-name>
+  	<url-pattern>/index.jsp</url-pattern>
+  </filter-mapping>
+  
+  <filter>
     <filter-name>LoginFilter</filter-name>
   	<filter-class>filter.LoginFilter</filter-class>
   </filter>
   <filter-mapping>
   	<filter-name>LoginFilter</filter-name>
-  	<url-pattern>/*</url-pattern>
+  	<url-pattern>/show.jsp</url-pattern>
   </filter-mapping>
-  <filter>
-  	<filter-name>LogFilter</filter-name>
-  	<filter-class>filter.LogFilter</filter-class>
-  </filter>
-  <filter-mapping>
-  	<filter-name>LogFilter</filter-name>
-  	<url-pattern>/Servlet/*</url-pattern>
-  </filter-mapping>
+  
+
+  
+ 
   
   <servlet>
     <description>This is the description of my J2EE component</description>
@@ -91,7 +96,7 @@
     <description>This is the description of my J2EE component</description>
     <display-name>This is the display name of my J2EE component</display-name>
     <servlet-name>LoadExcelServlet</servlet-name>
-    <servlet-class>web.LoadExcel</servlet-class>
+    <servlet-class>web.LoadExcelServlet</servlet-class>
   </servlet>
   <servlet>
     <description>This is the description of my J2EE component</description>
@@ -123,9 +128,10 @@
 
 
 
+
   <servlet-mapping>
     <servlet-name>GetExamTypeServlet</servlet-name>
-    <url-pattern>/GetExamTypeServlet</url-pattern>
+    <url-pattern>/Servlet/GetExamTypeServlet</url-pattern>
   </servlet-mapping>
   <servlet-mapping>
     <servlet-name>GetStuServlet</servlet-name>
@@ -153,7 +159,7 @@
   </servlet-mapping>
   <servlet-mapping>
     <servlet-name>ExportExcel</servlet-name>
-    <url-pattern>/ExportExcel</url-pattern>
+    <url-pattern>/Servlet/ExportExcel</url-pattern>
   </servlet-mapping>
   <servlet-mapping>
     <servlet-name>LoadExcelServlet</servlet-name>
@@ -169,8 +175,8 @@
   </servlet-mapping>
   <servlet-mapping>
     <servlet-name>LogOutServlet</servlet-name>
-    <url-pattern>/LogOutServlet</url-pattern>
-  </servlet-mapping>	
+    <url-pattern>/Servlet/LogOutServlet</url-pattern>
+  </servlet-mapping>
   <welcome-file-list>
     <welcome-file>index.jsp</welcome-file>
   </welcome-file-list>

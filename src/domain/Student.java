@@ -6,18 +6,27 @@ import java.util.regex.Pattern;
 
 public class Student {
 	private int id;
+	private char sex;
 	private String name;
 	private String company;
 	private String personid;
 	private String examtype;
 	private String examname;
 	private Date examtime;
-	private int exampc;
-	private int sgqycj;
-	private int sgdwcj;
-	private int xmfrcj;
-	private int zynlcj;
+	private String exampc;
+	private float sgqycj;
+	private float sgdwcj;
+	private float xmfrcj;
+	private float zynlcj;
 	
+	
+	
+	public char getSex() {
+		return sex;
+	}
+	public void setSex(char sex) {
+		this.sex = sex;
+	}
 	public Date getExamtime() {
 		return examtime;
 	}
@@ -60,40 +69,39 @@ public class Student {
 	public void setExamname(String examname) {
 		this.examname = examname;
 	}
-	public int getExampc() {
+	public String getExampc() {
 		return exampc;
 	}
-	public void setExampc(int exampc) {
+	public void setExampc(String exampc) {
 		this.exampc = exampc;
 	}
-	public int getSgqycj() {
+	public float getSgqycj() {
 		return sgqycj;
 	}
-	public void setSgqycj(int sgqycj) {
+	public void setSgqycj(float sgqycj) {
 		this.sgqycj = sgqycj;
 	}
-	public int getSgdwcj() {
+	public float getSgdwcj() {
 		return sgdwcj;
 	}
-	public void setSgdwcj(int sgdwcj) {
+	public void setSgdwcj(float sgdwcj) {
 		this.sgdwcj = sgdwcj;
 	}
-	public int getXmfrcj() {
+	public float getXmfrcj() {
 		return xmfrcj;
 	}
-	public void setXmfrcj(int xmfrcj) {
+	public void setXmfrcj(float xmfrcj) {
 		this.xmfrcj = xmfrcj;
 	}
-	public int getZynlcj() {
+	public float getZynlcj() {
 		return zynlcj;
 	}
-	public void setZynlcj(int zynlcj) {
+	public void setZynlcj(float zynlcj) {
 		this.zynlcj = zynlcj;
 	}
 	
 	public String valid(){
 		StringBuilder builder = new StringBuilder();
-		
 		if(name == null || name.equals("")){
 			builder.append("姓名不能为空!");
 		}
@@ -112,26 +120,8 @@ public class Student {
 		if(examtype == null || examtype.equals("")){
 			builder.append("考试类型不能为空!");
 		}
-		if(exampc == 0){
-			builder.append("考试批次不能为空!");
-		}
 		if(company == null || company.equals("")){
 			builder.append("公司名称不能为空!");
-		}
-		if(examtime == null){
-			builder.append("考试日期不能为空!");
-		}
-		if(sgqycj == 0){
-			builder.append("施工企业成绩不能为空!");
-		}
-		if(sgdwcj == 0){
-			builder.append("水管单位成绩不能为空!");
-		}
-		if(xmfrcj == 0){
-			builder.append("项目法人成绩不能为空!");
-		}
-		if(zynlcj == 0){
-			builder.append("专业能力成绩不能为空!");
 		}
 		if(builder.length()==0){
 			return null;

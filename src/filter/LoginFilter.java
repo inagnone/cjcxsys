@@ -31,33 +31,23 @@ public class LoginFilter implements Filter {
 		HttpServletRequest req = (HttpServletRequest) request;
 		HttpServletResponse resp = (HttpServletResponse) response;
 		
-//		<%HttpSession session0 = request.getSession(false); %>
-//	  	<%if(session0 != null){ %>
-//		  	<%ServletContext context = session0.getServletContext().getContext("/Certificate"); %>
-//		  	<%if(context != null){ %>
-//		  		<%HttpSession session2  = (HttpSession)context.getAttribute("session");  %>
-//		  		<%if(session2 != null ){ %>
-//		  			<%session0.setAttribute("user", session2.getAttribute("user")); %>
-//		  		<%}else{ %>
-//		  			<%session0.removeAttribute("user"); %>
-//		  		<%} %>
-//	  		<%}else{ %>
-//	  			<%session0.removeAttribute("user"); %>
-//	  		<%} %>
-//	  	<%} %>
 		
 		ServletContext context = req.getSession().getServletContext().getContext("/Certificate");
 		if(context != null){
 			String username  = (String) context.getAttribute("username");
 			if(username != null && !username.equals("")){
 				req.getSession().setAttribute("username", username);
+				chain.doFilter(request, response);	
 			}else{
 				req.getSession().removeAttribute("username");
+				resp.sendRedirect("index.jsp");
+				return ;
 			}
 		}else{
 			req.getSession().removeAttribute("username");
+			resp.sendRedirect("index.jsp");
+			return ;
 		}
-		chain.doFilter(request, response);	
 	}
 
 	@Override

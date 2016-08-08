@@ -1,0 +1,4 @@
+/Certificate/new/ExportExcelServlet
+/Certificate/show.jsp
+/Certificate/new/resetpw.jsp
+/Certificate/new/ShowcountServlet

@@ -60,7 +60,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 						    </li>
 						    <c:if test="${sessionScope.username != null }">
 							    <li class="dropdown">
-							      <a onClick="return confirm('确认退出登录？')" href="LogOutServlet" data-toggle="dropdown" >注销</a>						      
+							      <a onClick="return confirm('确认退出登录？')" href="Servlet/LogOutServlet" data-toggle="dropdown" >注销</a>						      
 							    </li>
 						    </c:if>
 						  </ul>									

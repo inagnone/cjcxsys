@@ -1,0 +1,9 @@
+/Certificate/new/AddDiplomaServlet
+/Certificate/new/LoadExcelServlet
+/Certificate/new/adddiploma.jsp
+/Certificate/new/ExportExcelServlet
+/Certificate/show.jsp
+/Certificate/new/resetpw.jsp
+/Certificate/new/ShowcountServlet
+/Certificate/regist.jsp
+/Certificate/new/RegistServlet

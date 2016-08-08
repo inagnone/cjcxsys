@@ -11,10 +11,14 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.lang.StringUtils;
+
 
 
 public class Autologin implements Filter{
-
+	String excludes;
+	String[] pages;
+	
 	@Override
 	public void destroy() {
 		// TODO Auto-generated method stub
@@ -28,18 +32,22 @@ public class Autologin implements Filter{
 		HttpServletRequest req = (HttpServletRequest) request;
 		HttpServletResponse resp = (HttpServletResponse) response;
 		
-		if(req.getSession().getAttribute("user") != null ){
-			resp.sendRedirect("show.jsp");
+		if(req.getSession().getAttribute("username") != null ){
+				req.getRequestDispatcher("show.jsp").forward(req, resp);
 		}else{
-			chain.doFilter(request, response);
+			chain.doFilter(req, resp);
 		}
 		
 	}
 
 	@Override
-	public void init(FilterConfig arg0) throws ServletException {
+	public void init(FilterConfig config) throws ServletException {
 		// TODO Auto-generated method stub
-		
+		excludes = config.getInitParameter("exclude");
+		if(StringUtils.isNotEmpty(excludes)){
+			pages = excludes.split(",");
+		}
+		return ;
 	}
 
 	
