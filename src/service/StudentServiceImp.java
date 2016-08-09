@@ -29,7 +29,11 @@ public class StudentServiceImp implements StudentService {
 	@Override
 	public List<Student> getStudents(Map<String, String[]> map) {
 		// TODO Auto-generated method stub
-		return studentdao.getStudents(map);
+		if(map.get("user").equals("admin")){
+			return studentdao.getStudentforadmin(map);
+		}else{
+			return studentdao.getStudents(map);
+		}
 	}
 
 	@Override
@@ -115,18 +119,34 @@ public class StudentServiceImp implements StudentService {
 	}
 
 	@Override
-	public int LoadExcel(String excelpath, File messfile) {
+	public List<List<Student>> LoadExcel(String excelpath) {
 		// TODO Auto-generated method stub
 		InputStream is = null;
 		FileOutputStream fos = null;
 		ArrayList<Student> result = new ArrayList<Student>();
 		try {
 			is = new FileInputStream(excelpath);
-			fos = new FileOutputStream(messfile);
 			String pagemess;
 			HSSFWorkbook hssfworkboot = new HSSFWorkbook(is);
 			List<List<Student>> stus = parseExcel1(hssfworkboot);
-			boolean accessable = true;
+			return stus;
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			throw new RuntimeException(e.getMessage());
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			throw new RuntimeException(e.getMessage());
+		} 
+	}
+	
+	public boolean valide(List<List<Student>> stus,File messfile){
+		boolean accessable = true;
+		String pagemess;
+		FileOutputStream fos = null;
+		try {
+			fos = new FileOutputStream(messfile);
 			for(int i=0;i<stus.size();i++){
 				pagemess = "第"+(i+1)+"页:\r\n";
 				fos.write(pagemess.getBytes());
@@ -135,32 +155,33 @@ public class StudentServiceImp implements StudentService {
 					String msg;
 					Student stu = page.get(j);
 					if(( msg = stu.valid()) == null){
-						result.add(stu);
-						fos.write("导入成功\r\n".getBytes());
+						fos.write("信息正确\r\n".getBytes());
 					}else{
 						msg = msg+"\r\n";
-						fos.write(msg.getBytes());
+						fos.write(("序号为"+stu.getId()+msg).getBytes());
 						accessable = false;
 					}
 				}
 			}
+			fos.write("如果有错误，请根据提示修改该行数据后重新导入源文件".getBytes());
 			fos.flush();
-			fos.close();
-			if(!accessable){
-				throw new RuntimeException("成绩信息不规范");
-			}
-			return addStudents(result);
+			return accessable;
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+			throw new RuntimeException(e.getMessage());
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		} catch (RuntimeException e) {
-			// TODO: handle exception
 			throw new RuntimeException(e.getMessage());
+		}finally{
+			try {
+				fos.close();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
-		return 0;
 	}
 
 	private List<List<Student>> parseExcel1(HSSFWorkbook hssfworkboot){
@@ -216,15 +237,21 @@ public class StudentServiceImp implements StudentService {
 				String val;
 				//读取行中各个字段的信息并生成diploma对象
 				if(hssfRow != null){
-					if(hssfRow.getCell(1) == null|| ExcelUtil.getcellvalue(hssfRow.getCell(1)) == null)break;
+					if(hssfRow.getCell(0) == null|| ExcelUtil.getcellvalue(hssfRow.getCell(0)) == null)break;
 				}
 				Student stu = new Student();
 				String index = null;
 				HSSFCell cell0 = hssfRow.getCell(0);
 				if(cell0 != null){
-					index = ExcelUtil.getcellvalue(cell0);
+					try{
+						index = ExcelUtil.getcellvalue(cell0);
+						stu.setId((int)cell0.getNumericCellValue());
+					}catch (Exception e){
+						throw new RuntimeException("第"+index+"行序号值不合规范");
+					}
+				}else{
+					throw new RuntimeException("请给定各行的一个唯一序号");
 				}
-				
 				//姓名
 				try{
 					HSSFCell cell1 = hssfRow.getCell(1);
@@ -351,8 +378,24 @@ public class StudentServiceImp implements StudentService {
 	}
 
 	@Override
-	public int addStudents(List<Student> stus) {
+	public int addStudents(List<List<Student>> stus) {
 		// TODO Auto-generated method stub
-		return studentdao.addStudents(stus);
+		ArrayList<Student> list = new ArrayList<Student>();
+		try{
+			for(int i=0;i<stus.size();i++){
+				for(int j=0;j<stus.get(i).size();j++){
+					list.add(stus.get(i).get(j));
+				}
+			}
+			return studentdao.addStudents(list);
+		}catch (RuntimeException e){
+			throw new RuntimeException(e.getMessage());
+		}
+	}
+
+	@Override
+	public List<Student> getStudentforadmin(Map<String, String[]> map) {
+		// TODO Auto-generated method stub
+		return studentdao.getStudentforadmin(map);
 	}
 }

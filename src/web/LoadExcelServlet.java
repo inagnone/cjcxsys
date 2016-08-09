@@ -107,35 +107,38 @@ public class LoadExcelServlet extends HttpServlet {
 			int seccessnum = 0 ;
 			if(url != null){
 				String realPath = request.getServletContext().getRealPath(url);
-				 seccessnum = service.LoadExcel(realPath,result);				
+				List<List<Student>> stus = service.LoadExcel(realPath);
+				if(stus.size() ==0 || stus.get(0).size()==0){
+					throw new RuntimeException("请检查文件是否为空，以及检查每一页的第一行第一个单元格不能为空");
+				}
+				if(service.valide(stus, result)){
+					seccessnum = service.addStudents(stus);
+				}else{
+					response.setHeader("Content-Disposition", "attachment;filename="+URLEncoder.encode("result.txt","utf-8"));
+					response.setContentType(this.getServletContext().getMimeType("result.txt"));//MIME类型
+					InputStream in = new FileInputStream(result);
+					OutputStream out = response.getOutputStream();
+					IOUtils.In2Out(in, out);
+					IOUtils.close(in, null);
+					result.delete();
+					return;
+				}
 			}				
 			response.sendRedirect("../SearchStu.jsp?msg=success_"+seccessnum);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
-				
-				if(!result.exists() || result.length()==0){
-					if(e.getCause() != null){
-						Throwable cause = e.getCause();
-						while(cause.getCause() != null){
-							cause = cause.getCause();
-						}
-						request.setAttribute("msg", cause.getMessage());
-						request.getRequestDispatcher("../SearchStu.jsp").forward(request, response);
-						return ;
-					}
+			if(e.getCause() != null){
+				Throwable cause = e.getCause();
+				while(cause.getCause() != null){
+					cause = cause.getCause();
 				}
-				
-				response.setHeader("Content-Disposition", "attachment;filename="+URLEncoder.encode("result.txt","utf-8"));
-				response.setContentType(this.getServletContext().getMimeType("result.txt"));//MIME类型
-				InputStream in = new FileInputStream(result);
-				OutputStream out = response.getOutputStream();
-				IOUtils.In2Out(in, out);
-				IOUtils.close(in, null);
-				result.delete();
-				User user = (User) request.getSession().getAttribute("user");
+				request.setAttribute("msg", cause.getMessage());
+				request.getRequestDispatcher("../SearchStu.jsp").forward(request, response);
 				return ;
-
-		} 
+			}
+		}finally{
+			result.delete();	
+		}
 	}
 
 	/**

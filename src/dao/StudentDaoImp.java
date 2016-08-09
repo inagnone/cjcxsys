@@ -51,7 +51,7 @@ public class StudentDaoImp implements StudentDao {
 			e.printStackTrace();
 		}
 	}
-
+	
 	@Override
 	public void deleteStudent(int id) {
 		// TODO Auto-generated method stub
@@ -101,10 +101,13 @@ public class StudentDaoImp implements StudentDao {
 	public int addStudents(List<Student> stus) {
 		// TODO Auto-generated method stub
 		String sql = "insert into cj values (null,?,?,?,?,?,?,?,?,?,?)";
+		QueryRunner runner;
+		Object[][] params;
+		int i = 0;
 		try {
-			QueryRunner runner = new QueryRunner(TransactionManager.getSource());
-			Object[][] params = new Object[stus.size()][10];
-			for(int i=0;i<stus.size();i++){
+			runner = new QueryRunner(TransactionManager.getSource());
+			params = new Object[stus.size()][10];
+			for(i=0;i<stus.size();i++){
 				params[i][0] = stus.get(i).getName();
 				params[i][1] = stus.get(i).getCompany();
 				params[i][2] = stus.get(i).getPersonid();
@@ -120,9 +123,50 @@ public class StudentDaoImp implements StudentDao {
 			return runner.batch(sql, params).length;
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			String[] mess = e.getMessage().split(":");
+			if(mess.length>1){
+				if(mess[0].contains("Duplicate entry")){
+					String[] reason = mess[0].split(" ");
+					String[] personid = reason[2].split("'");
+					throw new RuntimeException("身份证为："+personid[1]+"的数据存在重复，请核对信息并保证数据身份证字段唯一后重新导入原文件");
+				}
+			}
+			
 		}
 		return 0;
 	}
 
+	@Override
+	public List<Student> getStudentforadmin(Map<String, String[]> map) {
+		// TODO Auto-generated method stub
+		StringBuilder sql = new StringBuilder("select cj.id,name,company,personid,examname,examtype,exampc,sgqycj,sgdwcj,"
+				+ "xmfrcj,zynlcj,examtime from cj left join examtype on cj.examtype = examtype.typeid where");
+		if(map.get("name") != null && map.get("name")[0] != null && !map.get("name")[0].equals("")){
+			sql.append(" name like '%"+map.get("name")[0]+"%' and ");
+		}
+		if(map.get("personid") != null && map.get("personid")[0] != null && !map.get("personid")[0].equals("")){
+			sql.append(" personid = '"+map.get("personid")[0]+"' and ");
+		}
+		sql.delete(sql.length()-5, sql.length());
+		try {
+			QueryRunner runner = new QueryRunner(TransactionManager.getSource());
+			return runner.query(sql.toString(), new BeanListHandler<Student>(Student.class));
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+	public Student getStudentbypersonId(String personid){
+		String sql = "select cj.id,name,company,personid,examname,examtype,exampc,sgqycj,sgdwcj,xmfrcj,zynlcj,examtime from cj left join examtype on cj.examtype = examtype.typeid where cj.personid=?";
+		try {
+			QueryRunner runner = new QueryRunner(TransactionManager.getSource());
+			return runner.query(sql, new BeanHandler<Student>(Student.class),personid);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
+	}
 }

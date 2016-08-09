@@ -2,22 +2,21 @@ package web;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.commons.beanutils.BeanUtils;
-
-import domain.Student;
-
+import net.sf.json.JSONArray;
 import service.StudentService;
-
+import util.JsonUtil;
+import domain.Student;
 import factory.BasicFactory;
 
-public class AddStuServlet extends HttpServlet {
+public class AdminGetStudentServlet extends HttpServlet {
 
 	/**
 	 * The doGet method of the servlet. <br>
@@ -32,28 +31,21 @@ public class AddStuServlet extends HttpServlet {
 	public void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 
-		StudentService service = BasicFactory.getFactory().getService(StudentService.class);
-		Student stu = new Student();
-		try {
-			BeanUtils.populate(stu, request.getParameterMap());
-			if(request.getParameter("sgdwcj") != null && !request.getParameter("sgdwcj").equals(""))
-				stu.setSgdwcj(Integer.valueOf(request.getParameter("sgdwcj")));
-			if(request.getParameter("sgqycj") != null && !request.getParameter("sgqycj").equals(""))
-				stu.setSgqycj(Integer.valueOf(request.getParameter("sgqycj")));
-			if(request.getParameter("xmfrcj") != null && !request.getParameter("xmfrcj").equals(""))
-				stu.setXmfrcj(Integer.valueOf(request.getParameter("xmfrcj")));
-			if(request.getParameter("zynlcj") != null && !request.getParameter("zynlcj").equals(""))
-				stu.setZynlcj(Integer.valueOf(request.getParameter("zynlcj")));
-			service.addStudent(stu);
-			response.sendRedirect("../SearchStu.jsp");
-		} catch (IllegalAccessException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (InvocationTargetException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		StudentService studentService = BasicFactory.getFactory().getService(StudentService.class);
+		List<Student> list = (List<Student>) request.getSession().getAttribute("result");
+		if(request.getParameterMap().containsKey("search")){
+			list = studentService.getStudentforadmin(request.getParameterMap());
+//			if(request.getSession().getAttribute("user") != null){
+				//存进session，准备导出excel
+				request.getSession().setAttribute("result", list);	
+//			}
+		}else{
+			if(list== null)
+			list = new ArrayList<Student>();		
 		}
-		
+		JSONArray jsonArray = JSONArray.fromObject(list,JsonUtil.getConfig());
+		response.setContentType("text/json");
+		response.getWriter().write(jsonArray.toString());
 	}
 
 	/**

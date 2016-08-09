@@ -44,4 +44,11 @@ public interface StudentDao extends Dao {
 	 * @return
 	 */
 	public Student getStudentbyId(int id);
+	
+	/**
+	 * 查找学生成绩，模糊搜索
+	 * @param map
+	 * @return
+	 */
+	public List<Student> getStudentforadmin(Map<String, String[]> map);
 }

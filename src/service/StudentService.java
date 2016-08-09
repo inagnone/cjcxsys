@@ -32,7 +32,7 @@ public interface StudentService extends Service {
 	 * @param stus
 	 * @return
 	 */
-	public int addStudents(List<Student> stus);
+	public int addStudents(List<List<Student>> stus);
 	
 	/**
 	 * 修改学生
@@ -52,11 +52,26 @@ public interface StudentService extends Service {
 	 * @param file
 	 * @return
 	 */
-	public int LoadExcel(String excelpath,File messfile);
+	public List<List<Student>> LoadExcel(String excelpath);
 	
 	/**
 	 * 学生信息导出到excel文件
 	 * @param list
 	 */
 	public HSSFWorkbook ExportExcel(List<Student> list);
+	
+	/**
+	 * 模糊搜索学生
+	 * @param map
+	 * @return
+	 */
+	public List<Student> getStudentforadmin(Map<String, String[]> map);
+	
+	/**
+	 * 验证学生信息
+	 * @param stus
+	 * @param messfile
+	 * @return
+	 */
+	public boolean valide(List<List<Student>> stus,File messfile);
 }

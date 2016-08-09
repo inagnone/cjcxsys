@@ -330,25 +330,23 @@ $(document).ready(function(){
 	
 	function doSearch2(){
 		//获取搜索条件
+		$('')
     	$('#dg').datagrid('load',{  
 	   		search: true,
 	    	name: $('#name').val(),
 	    	personid: $('#personid').val(),
+	    	user:'admin'
    		});
 	}
 </script>
 <!-- 信息提示窗口 -->
 <c:if test="${requestScope.msg != null }">
 	<script>	
-		var msg = '${requestScope.msg}';
-		msg = decodeURI(msg);
 		$.messager.alert('My Title','${requestScope.msg}','info');
 	</script>
 </c:if>
 <c:if test="${param.msg != null }">
 	<script>	
-		var msg = '${param.msg != null }';
-		msg = decodeURI(msg);
 		$.messager.alert('My Title','${param.msg}','info');
 	</script>
 </c:if>
