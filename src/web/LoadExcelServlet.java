@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URLEncoder;
+import java.sql.BatchUpdateException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -19,6 +20,8 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
+
+import com.mysql.jdbc.PreparedStatement;
 
 import service.StudentService;
 import util.IOUtils;
@@ -125,7 +128,7 @@ public class LoadExcelServlet extends HttpServlet {
 				}
 			}				
 			response.sendRedirect("../SearchStu.jsp?msg=success_"+seccessnum);
-		} catch (Exception e) {
+		}catch (Exception e) {
 			// TODO Auto-generated catch block
 			if(e.getCause() != null){
 				Throwable cause = e.getCause();

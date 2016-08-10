@@ -1,5 +1,6 @@
 package dao;
 
+import java.sql.BatchUpdateException;
 import java.util.List;
 import java.util.Map;
 
@@ -22,6 +23,7 @@ public interface StudentDao extends Dao {
 	/**
 	 * 批量添加学生成绩
 	 * @param stus
+	 * @throws BatchUpdateException 
 	 */
 	public int addStudents(List<Student> stus);
 	
@@ -51,4 +53,26 @@ public interface StudentDao extends Dao {
 	 * @return
 	 */
 	public List<Student> getStudentforadmin(Map<String, String[]> map);
+	
+	/**
+	 * 通过姓名获取用户
+	 * @param name
+	 * @return
+	 */
+	public Student getStudentByName(String name);
+	
+	/**
+	 * 通过身份证获取用户
+	 * @param personid
+	 * @return
+	 */
+	public Student getStudentByPersonId(String personid);
+	
+	/**
+	 * 通过身份证和密码获取用户
+	 * @param name
+	 * @param personid
+	 * @return
+	 */
+	public Student getStudent(String name,String personid);
 }

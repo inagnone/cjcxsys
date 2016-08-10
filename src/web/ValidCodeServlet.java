@@ -11,6 +11,10 @@ import javax.servlet.http.HttpServletResponse;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import domain.Student;
+import service.StudentService;
+import factory.BasicFactory;
+
 public class ValidCodeServlet extends HttpServlet {
 
 	/**
@@ -25,7 +29,8 @@ public class ValidCodeServlet extends HttpServlet {
 	 */
 	public void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-
+		StudentService studentService = BasicFactory.getFactory().getService(StudentService.class);
+		
 		String validcode = request.getParameter("validcode");
 		response.setContentType("text/json");
 		JSONObject o = new JSONObject();
@@ -41,8 +46,22 @@ public class ValidCodeServlet extends HttpServlet {
 			response.getWriter().write(o.toString());
 			return;
 		}
-			o.put("success", true);
+		if(request.getParameter("name")!=null && !request.getParameter("name").equals("") && request.getParameter("personid")!=null && !request.getParameter("personid").equals("")){
+			Student student = studentService.getStudent(request.getParameter("name"), request.getParameter("personid"));
+			if(student == null){
+				o.put("success", false);
+				o.put("msg", "未能找到对应姓名和身份证的成绩信息");
+				response.getWriter().write(o.toString());
+				return;
+			}
+		}else{
+			o.put("success", false);
+			o.put("msg", "请给定用户姓名和身份证");
 			response.getWriter().write(o.toString());
+			return;
+		}
+		o.put("success", true);
+		response.getWriter().write(o.toString());
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

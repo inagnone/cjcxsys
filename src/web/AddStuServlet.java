@@ -3,6 +3,7 @@ package web;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.lang.reflect.InvocationTargetException;
+import java.util.Map;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -12,9 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.beanutils.BeanUtils;
 
 import domain.Student;
-
 import service.StudentService;
-
 import factory.BasicFactory;
 
 public class AddStuServlet extends HttpServlet {
@@ -35,7 +34,16 @@ public class AddStuServlet extends HttpServlet {
 		StudentService service = BasicFactory.getFactory().getService(StudentService.class);
 		Student stu = new Student();
 		try {
-			BeanUtils.populate(stu, request.getParameterMap());
+			if(request.getParameter("examtime")==null || !request.getParameter("examtime").equals("")){
+				Map<String, String[]> map = request.getParameterMap();
+				BeanUtils.populate(stu, map);
+			}else{
+				stu.setName(request.getParameter("name"));
+				stu.setPersonid(request.getParameter("personid"));
+				stu.setCompany(request.getParameter("company"));
+				stu.setExamtype(request.getParameter("examtype"));
+				stu.setExampc(request.getParameter("exampc"));
+			}
 			if(request.getParameter("sgdwcj") != null && !request.getParameter("sgdwcj").equals(""))
 				stu.setSgdwcj(Integer.valueOf(request.getParameter("sgdwcj")));
 			if(request.getParameter("sgqycj") != null && !request.getParameter("sgqycj").equals(""))

@@ -127,23 +127,23 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 </div>
 
 <div id="addstu" class="easyui-window" title="添加类型" data-options="modal:true,closed:true,iconCls:'icon-save'" style="width:750px;height:500px;padding:10px;">
-	<form id="form">
+	<form id="form" class="easyui-form" data-options="novalidate:false">
 		<input type="hidden" name="id">
 		<table style="border-collapse:   separate; border-spacing:   10px;">
 			<tr>
 				<td>
-					姓名：<input value="123" id="newname" name="name" class="easyui-textbox" style="line-height:26px;border:1px solid #ccc">
+					姓名：<input value="123" id="newname" name="name" class="easyui-textbox" data-options="required:true,missingMessage:'用户名不能为空'" style="line-height:26px;border:1px solid #ccc">
 				</td>
 				<td>
-					身份证号：<input id="newpersonid" name="personid" class="easyui-textbox" style="line-height:26px;border:1px solid #ccc">
+					身份证号：<input id="newpersonid" name="personid" class="easyui-textbox" data-options="required:true,missingMessage:'身份证不能为空'" style="line-height:26px;border:1px solid #ccc">
 				</td>
 			</tr>
 			<tr>
 				<td>
-					工作单位：<input id="newcompany" name="company" class="easyui-textbox" style="line-height:26px;border:1px solid #ccc">
+					工作单位：<input id="newcompany" name="company" class="easyui-textbox" data-options="required:true,missingMessage:'工作单位不能为空'" style="line-height:26px;border:1px solid #ccc">
 				</td>
 				<td>
-					考试名称：<select name="examtype" id="newexamname"></select>
+					考试名称：<select name="examtype" data-options="required:true" id="newexamname"></select>
 				</td>
 			</tr>
 			<tr>
@@ -172,11 +172,18 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			</tr>
 			<tr align="center">
 				<td colspan="2">
-					<input id="submit" type="submit" value="提交" class="easyui-linkbutton">
+					<a id="submit" href="javascript:void(0)" class="easyui-linkbutton" onclick="submitform()">提交</a>
 					<a href="javascript:void(0)" class="easyui-linkbutton" onclick="clearForm('#form')">重置</a>
 				</td>
 			</tr>
 		</table>
+	</form>
+	模板选择：
+	<form action="servlet/DownloadServlet">
+		<select id="cc" class="easyui-combobox" name="templetfile" style="width:200px;">
+			<option value="WEB-INF/templet/templet.xls">模板1</option>
+		</select>
+		<input type="submit" value="下载">
 	</form>
 	<form action="Servlet/LoadExcel" enctype="multipart/form-data" method="post">
 		<table width="100%">
@@ -206,6 +213,18 @@ $(document).ready(function(){
 		   }
 	   });
 });
+	//提交表单
+	function submitform(){
+		$('#form').form('submit',{
+			onSubmit:function(){
+				return $(this).form('enableValidation').form('validate');
+			},
+			success:function(){
+				$('#addstu').window('close');
+				$('#dg').datagrid('reload');
+			}
+		});
+	}
 	//添加
 	function add(){
 		clearForm('#form');
@@ -311,7 +330,7 @@ $(document).ready(function(){
 		 $.ajax({
 			   type: "POST",
 			   url: "ValidCodeServlet",
-			   data: "validcode="+$('#validcode').val(),
+			   data: "validcode="+$('#validcode').val()+"&name="+$('#name').val()+"&personid="+$('#personid').val(),
 			   success: function(result){
 			     if(result.success){
 					//获取搜索条件
@@ -330,7 +349,6 @@ $(document).ready(function(){
 	
 	function doSearch2(){
 		//获取搜索条件
-		$('')
     	$('#dg').datagrid('load',{  
 	   		search: true,
 	    	name: $('#name').val(),

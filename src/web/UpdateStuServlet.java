@@ -3,6 +3,9 @@ package web;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.lang.reflect.InvocationTargetException;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -27,13 +30,23 @@ public class UpdateStuServlet extends HttpServlet {
 		StudentService service = BasicFactory.getFactory().getService(StudentService.class);
 		Student stu = new Student();
 		try {
-			BeanUtils.populate(stu, request.getParameterMap());
+			if(request.getParameter("examtime")==null || !request.getParameter("examtime").equals("")){
+				Map<String, String[]> map = request.getParameterMap();
+				BeanUtils.populate(stu, map);
+			}else{
+				stu.setName(request.getParameter("name"));
+				stu.setPersonid(request.getParameter("personid"));
+				stu.setCompany(request.getParameter("company"));
+				stu.setExamtype(request.getParameter("examtype"));
+				stu.setExampc(request.getParameter("exampc"));
+			}
+			stu.setId(Integer.valueOf(request.getParameter("id")));
 			stu.setSgdwcj(Integer.valueOf(request.getParameter("sgdwcj")));
 			stu.setSgqycj(Integer.valueOf(request.getParameter("sgqycj")));
 			stu.setXmfrcj(Integer.valueOf(request.getParameter("xmfrcj")));
 			stu.setZynlcj(Integer.valueOf(request.getParameter("zynlcj")));
 			service.updateStudent(stu);
-			response.sendRedirect("SearchStu.jsp");
+			response.sendRedirect("../SearchStu.jsp");
 		} catch (IllegalAccessException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

@@ -35,10 +35,9 @@ public class GetStuServlet extends HttpServlet {
 		List<Student> list = (List<Student>) request.getSession().getAttribute("result");
 		if(request.getParameterMap().containsKey("search")){
 			list = studentService.getStudents(request.getParameterMap());
-//			if(request.getSession().getAttribute("user") != null){
-				//存进session，准备导出excel
+			if(request.getParameterMap().get("user")!=null && request.getParameterMap().get("user").equals("admin")){
 				request.getSession().setAttribute("result", list);	
-//			}
+			}
 		}else{
 			if(list== null)
 			list = new ArrayList<Student>();		

@@ -6,17 +6,21 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.sql.BatchUpdateException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.dbutils.QueryRunner;
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFCellStyle;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Cell;
+
+import com.mysql.jdbc.PreparedStatement;
 
 import util.ExcelUtil;
 import dao.StudentDao;
@@ -29,10 +33,14 @@ public class StudentServiceImp implements StudentService {
 	@Override
 	public List<Student> getStudents(Map<String, String[]> map) {
 		// TODO Auto-generated method stub
-		if(map.get("user").equals("admin")){
+		if(map.get("user")!=null && map.get("user")[0] != null && map.get("user")[0].equals("admin")){
 			return studentdao.getStudentforadmin(map);
 		}else{
-			return studentdao.getStudents(map);
+			if(map.get("name") != null && map.get("name")[0] != null && !map.get("name")[0].equals("") && map.get("personid") != null && map.get("personid")[0] != null && !map.get("personid")[0].equals("")){
+				return studentdao.getStudents(map);
+			}else{
+				return null;
+			}
 		}
 	}
 
@@ -364,7 +372,7 @@ public class StudentServiceImp implements StudentService {
 					if(cell10 != null){
 						String value = ExcelUtil.getcellvalue(cell10);
 						if(value != null){
-							stu.setSgqycj(Float.valueOf(value));
+							stu.setZynlcj(Float.valueOf(value));
 						}
 					}
 				}catch (Exception e){
@@ -378,7 +386,7 @@ public class StudentServiceImp implements StudentService {
 	}
 
 	@Override
-	public int addStudents(List<List<Student>> stus) {
+	public int addStudents(List<List<Student>> stus)  {
 		// TODO Auto-generated method stub
 		ArrayList<Student> list = new ArrayList<Student>();
 		try{
@@ -397,5 +405,23 @@ public class StudentServiceImp implements StudentService {
 	public List<Student> getStudentforadmin(Map<String, String[]> map) {
 		// TODO Auto-generated method stub
 		return studentdao.getStudentforadmin(map);
+	}
+
+	@Override
+	public Student getStudentByName(String name) {
+		// TODO Auto-generated method stub
+		return studentdao.getStudentByName(name);
+	}
+
+	@Override
+	public Student getStudentByPersonId(String personid) {
+		// TODO Auto-generated method stub
+		return studentdao.getStudentByPersonId(personid);
+	}
+
+	@Override
+	public Student getStudent(String name, String personid) {
+		// TODO Auto-generated method stub
+		return studentdao.getStudent(name, personid);
 	}
 }

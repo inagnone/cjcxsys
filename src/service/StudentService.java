@@ -1,11 +1,13 @@
 package service;
 
 import java.io.File;
+import java.sql.BatchUpdateException;
 import java.util.List;
 import java.util.Map;
 
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 
+import annotation.Tran;
 import domain.Student;
 
 public interface StudentService extends Service {
@@ -31,7 +33,9 @@ public interface StudentService extends Service {
 	 * 批量导入学生
 	 * @param stus
 	 * @return
+	 * @throws BatchUpdateException 
 	 */
+	@Tran
 	public int addStudents(List<List<Student>> stus);
 	
 	/**
@@ -74,4 +78,26 @@ public interface StudentService extends Service {
 	 * @return
 	 */
 	public boolean valide(List<List<Student>> stus,File messfile);
+	
+	/**
+	 * 通过姓名获取用户
+	 * @param name
+	 * @return
+	 */
+	public Student getStudentByName(String name);
+	
+	/**
+	 * 通过身份证获取用户
+	 * @param personid
+	 * @return
+	 */
+	public Student getStudentByPersonId(String personid);
+	
+	/**
+	 * 通过身份证和密码获取用户
+	 * @param name
+	 * @param personid
+	 * @return
+	 */
+	public Student getStudent(String name,String personid);
 }

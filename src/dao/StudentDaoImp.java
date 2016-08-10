@@ -1,14 +1,19 @@
 package dao;
 
+import java.sql.BatchUpdateException;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
+
+import javax.sql.DataSource;
 
 import org.apache.commons.dbutils.QueryRunner;
 import org.apache.commons.dbutils.handlers.BeanHandler;
 import org.apache.commons.dbutils.handlers.BeanListHandler;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+
+import com.mysql.jdbc.PreparedStatement;
 
 import util.TransactionManager;
 import domain.Student;
@@ -104,6 +109,7 @@ public class StudentDaoImp implements StudentDao {
 		QueryRunner runner;
 		Object[][] params;
 		int i = 0;
+		DataSource source;
 		try {
 			runner = new QueryRunner(TransactionManager.getSource());
 			params = new Object[stus.size()][10];
@@ -123,6 +129,8 @@ public class StudentDaoImp implements StudentDao {
 			return runner.batch(sql, params).length;
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
+			System.out.println(e.getClass());
+			e.printStackTrace();
 			String[] mess = e.getMessage().split(":");
 			if(mess.length>1){
 				if(mess[0].contains("Duplicate entry")){
@@ -131,7 +139,6 @@ public class StudentDaoImp implements StudentDao {
 					throw new RuntimeException("身份证为："+personid[1]+"的数据存在重复，请核对信息并保证数据身份证字段唯一后重新导入原文件");
 				}
 			}
-			
 		}
 		return 0;
 	}
@@ -163,6 +170,32 @@ public class StudentDaoImp implements StudentDao {
 		try {
 			QueryRunner runner = new QueryRunner(TransactionManager.getSource());
 			return runner.query(sql, new BeanHandler<Student>(Student.class),personid);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+	@Override
+	public Student getStudentByName(String name) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Student getStudentByPersonId(String personid) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Student getStudent(String name, String personid) {
+		// TODO Auto-generated method stub
+		String sql = "select cj.id,name,company,personid,examname,examtype,exampc,sgqycj,sgdwcj,xmfrcj,zynlcj,examtime from cj left join examtype on cj.examtype = examtype.typeid where name=? and personid=?";
+		try {
+			QueryRunner runner = new QueryRunner(TransactionManager.getSource());
+			return runner.query(sql, new BeanHandler<Student>(Student.class),name,personid);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
