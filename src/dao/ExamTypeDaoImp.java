@@ -6,16 +6,11 @@ import java.util.Map;
 
 import org.apache.commons.dbutils.QueryRunner;
 import org.apache.commons.dbutils.handlers.BeanListHandler;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.apache.logging.log4j.Marker;
-import org.apache.logging.log4j.MarkerManager;
 
 import util.TransactionManager;
 import domain.ExamType;
 
 public class ExamTypeDaoImp implements ExamTypeDao {
-	private Logger log = LogManager.getRootLogger();
 	@Override
 	public List<ExamType> getExamType(Map<String, String[]> map) {
 		// TODO Auto-generated method stub
@@ -59,7 +54,6 @@ public class ExamTypeDaoImp implements ExamTypeDao {
 		try {
 			QueryRunner runner = new QueryRunner(TransactionManager.getSource());
 			runner.update(sql,type.getExamname(),type.getTypeid());
-			log.info("添加类型");
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

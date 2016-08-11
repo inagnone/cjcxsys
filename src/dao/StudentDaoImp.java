@@ -12,6 +12,7 @@ import org.apache.commons.dbutils.handlers.BeanHandler;
 import org.apache.commons.dbutils.handlers.BeanListHandler;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.log4j.MDC;
 
 import com.mysql.jdbc.PreparedStatement;
 
@@ -79,7 +80,7 @@ public class StudentDaoImp implements StudentDao {
 		try {
 			QueryRunner runner = new QueryRunner(TransactionManager.getSource());
 			runner.update(sql,stu.getName(),stu.getCompany(),stu.getPersonid(),stu.getExamtype(),stu.getExampc(),stu.getSgqycj(),stu.getSgdwcj(),stu.getXmfrcj(),stu.getZynlcj(),stu.getId());
-			log.info("更新学生"+stu.getName());
+			log.warn("更新");
 			return stu;
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
