@@ -12,6 +12,7 @@ import org.apache.commons.dbutils.handlers.BeanHandler;
 import org.apache.commons.dbutils.handlers.BeanListHandler;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.log4j.MDC;
 
 import com.mysql.jdbc.PreparedStatement;
 
@@ -49,8 +50,9 @@ public class StudentDaoImp implements StudentDao {
 		String sql = "insert into cj values (null,?,?,?,?,?,?,?,?,?,?)";
 		try {
 			QueryRunner runner = new QueryRunner(TransactionManager.getSource());
+			MDC.put("cjname", stu.getName());
+			log.warn("添加");
 			runner.update(sql,stu.getName(),stu.getCompany(),stu.getPersonid(),stu.getExamtype(),stu.getExampc(),stu.getSgqycj(),stu.getSgdwcj(),stu.getXmfrcj(),stu.getZynlcj(),stu.getExamtime());
-			log.info("添加学生"+stu.getName());
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -63,8 +65,14 @@ public class StudentDaoImp implements StudentDao {
 		String sql = "delete from cj where id =?";
 		try {
 			QueryRunner runner = new QueryRunner(TransactionManager.getSource());
-			runner.update(sql,id);
-			log.info("删除学生");
+			Student student = getStudentbyId(id);
+			if(student != null){
+				MDC.put("cjname", student.getName());
+				log.warn("删除");
+				runner.update(sql,id);
+			}else{
+				throw new RuntimeException("指定学生成绩信息不存在");
+			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -79,7 +87,8 @@ public class StudentDaoImp implements StudentDao {
 		try {
 			QueryRunner runner = new QueryRunner(TransactionManager.getSource());
 			runner.update(sql,stu.getName(),stu.getCompany(),stu.getPersonid(),stu.getExamtype(),stu.getExampc(),stu.getSgqycj(),stu.getSgdwcj(),stu.getXmfrcj(),stu.getZynlcj(),stu.getId());
-			log.info("更新学生"+stu.getName());
+			MDC.put("cjname", stu.getName());
+			log.warn("更新");
 			return stu;
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -124,7 +133,8 @@ public class StudentDaoImp implements StudentDao {
 				params[i][7] = stus.get(i).getXmfrcj();
 				params[i][8] = stus.get(i).getZynlcj();
 				params[i][9] = stus.get(i).getExamtime();
-				log.info("添加学生"+stus.get(i).getName());
+				MDC.put("cjname", stus.get(i).getName());
+				log.warn("添加");
 			}
 			return runner.batch(sql, params).length;
 		} catch (SQLException e) {
