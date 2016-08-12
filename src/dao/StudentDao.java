@@ -4,6 +4,7 @@ import java.sql.BatchUpdateException;
 import java.util.List;
 import java.util.Map;
 
+import annotation.Tran;
 import domain.Student;
 
 public interface StudentDao extends Dao {
@@ -18,6 +19,7 @@ public interface StudentDao extends Dao {
 	 * 添加学生成绩
 	 * @param stu
 	 */
+	@Tran
 	public void addStudent(Student stu);
 	
 	/**
@@ -25,12 +27,14 @@ public interface StudentDao extends Dao {
 	 * @param stus
 	 * @throws BatchUpdateException 
 	 */
+	@Tran
 	public int addStudents(List<Student> stus);
 	
 	/**
 	 * 删除学生成绩
 	 * @param stu
 	 */
+	@Tran
 	public void deleteStudent(int id);
 	
 	/**
@@ -38,6 +42,7 @@ public interface StudentDao extends Dao {
 	 * @param stu
 	 * @return
 	 */
+	@Tran
 	public Student updateStudent(Student stu);
 	
 	/**

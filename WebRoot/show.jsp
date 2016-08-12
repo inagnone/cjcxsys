@@ -56,8 +56,12 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 						      <a href="SearchType.jsp" data-toggle="dropdown" target="date">考试类型查询 </a>
 						    </li>
 						    <li class="dropdown">
+						      <a href="SearchStuLog.jsp" data-toggle="dropdown" target="date">异动记录 </a>
+						    </li>
+						    <li class="dropdown">
 						      <a href="${basepath }/Certificate" data-toggle="dropdown">证书查询</a>						      
 						    </li>
+						    
 						    <c:if test="${sessionScope.username != null }">
 							    <li class="dropdown">
 							      <a onClick="return confirm('确认退出登录？')" href="Servlet/LogOutServlet" data-toggle="dropdown" >注销</a>						      
