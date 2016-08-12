@@ -13,4 +13,19 @@ public interface ActionLog extends Dao{
 	 */
 	public List<StudentActionLog> getStulogs(Map<String, String[]>map);
 	
+	/**
+	 * 获取成绩日志（后台分页）
+	 * @param map
+	 * @param page
+	 * @param rows
+	 * @return
+	 */
+	public List<StudentActionLog> getStulogs(Map<String, String[]>map,int page,int rows);
+	
+	/**
+	 * 统计日志总数
+	 * @return
+	 */
+	public int countStuLog(Map<String, String[]>map);
+	
 }

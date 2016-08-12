@@ -15,5 +15,17 @@ public class ActionLogServiceImp implements ActionLogService{
 		// TODO Auto-generated method stub
 		return dao.getStulogs(map);
 	}
+	@Override
+	public List<StudentActionLog> getStuActionLog(Map<String, String[]> map,
+			int page, int rows) {
+		// TODO Auto-generated method stub
+		List<StudentActionLog> list = dao.getStulogs(map,page,rows);
+		return list;
+	}
+	@Override
+	public int countStuActionLog(Map<String, String[]>map) {
+		// TODO Auto-generated method stub
+		return dao.countStuLog(map);
+	}
 
 }

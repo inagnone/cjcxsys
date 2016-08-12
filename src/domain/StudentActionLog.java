@@ -2,6 +2,8 @@ package domain;
 
 import java.sql.Date;
 
+
+
 public class StudentActionLog {
 	String user;
 	String cjname;
@@ -38,6 +40,5 @@ public class StudentActionLog {
 	public void setIp(String ip) {
 		this.ip = ip;
 	}
-	
 	
 }
