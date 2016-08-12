@@ -31,13 +31,13 @@ public class StudentServiceImp implements StudentService {
 
 	private StudentDao studentdao = BasicFactory.getFactory().getDao(StudentDao.class);
 	@Override
-	public List<Student> getStudents(Map<String, String[]> map) {
+	public List<Student> getStudents(Map<String, String[]> map,int page,int rows) {
 		// TODO Auto-generated method stub
 		if(map.get("user")!=null && map.get("user")[0] != null && map.get("user")[0].equals("admin")){
-			return studentdao.getStudentforadmin(map);
+			return studentdao.getStudentforadmin(map,page,rows);
 		}else{
 			if(map.get("name") != null && map.get("name")[0] != null && !map.get("name")[0].equals("") && map.get("personid") != null && map.get("personid")[0] != null && !map.get("personid")[0].equals("")){
-				return studentdao.getStudents(map);
+				return studentdao.getStudents(map,page,rows);
 			}else{
 				return null;
 			}
@@ -402,6 +402,12 @@ public class StudentServiceImp implements StudentService {
 	}
 
 	@Override
+	public List<Student> getStudentforadmin(Map<String, String[]> map,int page,int rows) {
+		// TODO Auto-generated method stub
+		return studentdao.getStudentforadmin(map,page,rows);
+	}
+	
+	@Override
 	public List<Student> getStudentforadmin(Map<String, String[]> map) {
 		// TODO Auto-generated method stub
 		return studentdao.getStudentforadmin(map);
@@ -423,5 +429,11 @@ public class StudentServiceImp implements StudentService {
 	public Student getStudent(String name, String personid) {
 		// TODO Auto-generated method stub
 		return studentdao.getStudent(name, personid);
+	}
+
+	@Override
+	public int countStudents(Map<String, String[]> map) {
+		// TODO Auto-generated method stub
+		return studentdao.countStudents(map);
 	}
 }

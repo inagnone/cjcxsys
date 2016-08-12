@@ -3,7 +3,9 @@ package web;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -11,6 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import net.sf.json.JSONArray;
+import net.sf.json.JSONObject;
 import service.StudentService;
 import util.JsonUtil;
 import domain.Student;
@@ -32,20 +35,15 @@ public class AdminGetStudentServlet extends HttpServlet {
 			throws ServletException, IOException {
 
 		StudentService studentService = BasicFactory.getFactory().getService(StudentService.class);
-		List<Student> list = (List<Student>) request.getSession().getAttribute("result");
-		if(request.getParameterMap().containsKey("search")){
-			list = studentService.getStudentforadmin(request.getParameterMap());
-//			if(request.getSession().getAttribute("user") != null){
-				//存进session，准备导出excel
-				request.getSession().setAttribute("result", list);	
-//			}
-		}else{
-			if(list== null)
-			list = new ArrayList<Student>();		
-		}
-		JSONArray jsonArray = JSONArray.fromObject(list,JsonUtil.getConfig());
+		int page = (request.getParameter("page")!=null && !request.getParameter("page").equals("")) ? Integer.valueOf(request.getParameter("page")):0;
+		int rows = (request.getParameter("rows")!=null && !request.getParameter("rows").equals("")) ? Integer.valueOf(request.getParameter("rows")):0;
+		List<Student> list = studentService.getStudentforadmin(request.getParameterMap(),page,rows);
+		Map<String, Object> jsonmap = new HashMap<String, Object>();
+		jsonmap.put("total", studentService.countStudents(request.getParameterMap()));
+		jsonmap.put("rows", list);
+		JSONObject result = JSONObject.fromObject(jsonmap,JsonUtil.getConfig());
 		response.setContentType("text/json");
-		response.getWriter().write(jsonArray.toString());
+		response.getWriter().write(result.toString());
 	}
 
 	/**

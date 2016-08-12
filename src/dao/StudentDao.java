@@ -13,7 +13,7 @@ public interface StudentDao extends Dao {
 	 * 获取学生成绩
 	 * @return
 	 */
-	public List<Student> getStudents(Map<String, String[]> map);
+	public List<Student> getStudents(Map<String, String[]> map,int page,int rows);
 	
 	/**
 	 * 添加学生成绩
@@ -57,7 +57,7 @@ public interface StudentDao extends Dao {
 	 * @param map
 	 * @return
 	 */
-	public List<Student> getStudentforadmin(Map<String, String[]> map);
+	public List<Student> getStudentforadmin(Map<String, String[]> map,int page,int rows);
 	
 	/**
 	 * 通过姓名获取用户
@@ -80,4 +80,18 @@ public interface StudentDao extends Dao {
 	 * @return
 	 */
 	public Student getStudent(String name,String personid);
+
+	/**
+	 * 统计学生数量
+	 * @param map
+	 * @return
+	 */
+	int countStudents(Map<String, String[]> map);
+
+	/**
+	 * 获取满足条件的学生成绩
+	 * @param map
+	 * @return
+	 */
+	List<Student> getStudentforadmin(Map<String, String[]> map);
 }

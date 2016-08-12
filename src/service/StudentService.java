@@ -15,7 +15,7 @@ public interface StudentService extends Service {
 	 * 获取学生
 	 * @return
 	 */
-	public List<Student> getStudents(Map<String, String[]> map);
+	public List<Student> getStudents(Map<String, String[]> map,int page,int rows);
 	
 	/**
 	 * 更据id获取学生
@@ -69,7 +69,7 @@ public interface StudentService extends Service {
 	 * @param map
 	 * @return
 	 */
-	public List<Student> getStudentforadmin(Map<String, String[]> map);
+	public List<Student> getStudentforadmin(Map<String, String[]> map,int page,int rows);
 	
 	/**
 	 * 验证学生信息
@@ -100,4 +100,18 @@ public interface StudentService extends Service {
 	 * @return
 	 */
 	public Student getStudent(String name,String personid);
+	
+	/**
+	 * 统计学生数量
+	 * @param map
+	 * @return
+	 */
+	int countStudents(Map<String, String[]> map);
+
+	/**
+	 * 获取满足条件的所有学生成绩
+	 * @param map
+	 * @return
+	 */
+	List<Student> getStudentforadmin(Map<String, String[]> map);
 }

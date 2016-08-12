@@ -44,7 +44,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	  		<div> 
 		  		<div>
 		  		 		<c:if test="${sessionScope.username != null }">
-		  		 			<a href="Servlet/ExportExcel" class="easyui-linkbutton" iconCls="icon-save" plain="true" >导出所有查询结果到excel文件</a>
+		  		 			<a class="easyui-linkbutton" iconCls="icon-save" plain="true" onclick="exporttoexcel()">导出所有查询结果到excel文件</a>
 		  		 			<a class="easyui-linkbutton" iconCls="icon-save" plain="true" onclick="getstu()">导出选中结果到excel文件</a>	
 			  		 		<a class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="add()">添加</a>	
 			  		 		<a class="easyui-linkbutton" iconCls="icon-edit"  plain="true" onclick="edit()">修改</a>
@@ -127,7 +127,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 </div>
 
 <div id="addstu" class="easyui-window" title="添加类型" data-options="modal:true,closed:true,iconCls:'icon-save'" style="width:750px;height:500px;padding:10px;">
-	<form id="form" class="easyui-form" data-options="novalidate:false">
+	<form id="form" method="post" class="easyui-form" data-options="novalidate:false">
 		<input type="hidden" name="id">
 		<table style="border-collapse:   separate; border-spacing:   10px;">
 			<tr>
@@ -317,7 +317,7 @@ $(document).ready(function(){
 		if(ids.length == 0){
 			alert("请选择证书");
 		}else{
-			post('ExportExcel',{id:ids});
+			post('Servlet/ExportExcel',{id:ids});
 		}
 	};
 	
@@ -355,6 +355,12 @@ $(document).ready(function(){
 	    	personid: $('#personid').val(),
 	    	user:'admin'
    		});
+	}
+	
+	function exporttoexcel(){
+		var name = $('#name').val();
+    	var personid =  $('#personid').val();
+		post('Servlet/ExportExcel',{name:name,personid:personid});
 	}
 </script>
 <!-- 信息提示窗口 -->

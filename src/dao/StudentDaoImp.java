@@ -10,6 +10,7 @@ import javax.sql.DataSource;
 import org.apache.commons.dbutils.QueryRunner;
 import org.apache.commons.dbutils.handlers.BeanHandler;
 import org.apache.commons.dbutils.handlers.BeanListHandler;
+import org.apache.commons.dbutils.handlers.ScalarHandler;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.log4j.MDC;
@@ -23,7 +24,7 @@ public class StudentDaoImp implements StudentDao {
 	private Log log = LogFactory.getLog(this.getClass());
 	
 	@Override
-	public List<Student> getStudents(Map<String, String[]> map) {
+	public List<Student> getStudents(Map<String, String[]> map,int page,int rows) {
 		// TODO Auto-generated method stub
 		StringBuilder sql = new StringBuilder("select cj.id,name,company,personid,examname,examtype,exampc,sgqycj,sgdwcj,"
 				+ "xmfrcj,zynlcj,examtime from cj left join examtype on cj.examtype = examtype.typeid where");
@@ -34,6 +35,7 @@ public class StudentDaoImp implements StudentDao {
 			sql.append(" personid='"+map.get("personid")[0]+"' and ");
 		}
 		sql.delete(sql.length()-5, sql.length());
+		sql.append(" limit "+(page-1)*rows+","+rows);
 		try {
 			QueryRunner runner = new QueryRunner(TransactionManager.getSource());
 			return runner.query(sql.toString(), new BeanListHandler<Student>(Student.class));
@@ -154,6 +156,29 @@ public class StudentDaoImp implements StudentDao {
 	}
 
 	@Override
+	public List<Student> getStudentforadmin(Map<String, String[]> map,int page,int rows) {
+		// TODO Auto-generated method stub
+		StringBuilder sql = new StringBuilder("select cj.id,name,company,personid,examname,examtype,exampc,sgqycj,sgdwcj,"
+				+ "xmfrcj,zynlcj,examtime from cj left join examtype on cj.examtype = examtype.typeid where");
+		if(map.get("name") != null && map.get("name")[0] != null && !map.get("name")[0].equals("")){
+			sql.append(" name like '%"+map.get("name")[0]+"%' and ");
+		}
+		if(map.get("personid") != null && map.get("personid")[0] != null && !map.get("personid")[0].equals("")){
+			sql.append(" personid = '"+map.get("personid")[0]+"' and ");
+		}
+		sql.delete(sql.length()-5, sql.length());
+		sql.append(" limit "+(page-1)*rows+","+rows);
+		try {
+			QueryRunner runner = new QueryRunner(TransactionManager.getSource());
+			return runner.query(sql.toString(), new BeanListHandler<Student>(Student.class));
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	@Override
 	public List<Student> getStudentforadmin(Map<String, String[]> map) {
 		// TODO Auto-generated method stub
 		StringBuilder sql = new StringBuilder("select cj.id,name,company,personid,examname,examtype,exampc,sgqycj,sgdwcj,"
@@ -211,5 +236,25 @@ public class StudentDaoImp implements StudentDao {
 			e.printStackTrace();
 		}
 		return null;
+	}
+	
+	@Override
+	public int countStudents(Map<String, String[]> map){
+		StringBuilder sql = new StringBuilder("select count(*) from cj where");
+		if(map.get("name") != null && map.get("name")[0] != null && !map.get("name")[0].equals("")){
+			sql.append(" name like '%"+map.get("name")[0]+"%' and ");
+		}
+		if(map.get("personid") != null && map.get("personid")[0] != null && !map.get("personid")[0].equals("")){
+			sql.append(" personid = '"+map.get("personid")[0]+"' and ");
+		}
+		sql.delete(sql.length()-5, sql.length());
+		try {
+			QueryRunner runner = new QueryRunner(TransactionManager.getSource());
+			return ((Long)runner.query(sql.toString(), new ScalarHandler())).intValue();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return 0;
 	}
 }

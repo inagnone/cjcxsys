@@ -48,7 +48,7 @@ public class ExportExcel extends HttpServlet {
 				stus.add(service.getStudentbyId(Integer.valueOf(i)));
 			}
 		}else{
-			stus = (List<Student>) request.getSession().getAttribute("result");			
+			stus = service.getStudentforadmin(request.getParameterMap());
 		}
 		File dir = new File(this.getServletContext().getRealPath("WEB-INF/temp"));
 		if(!dir.exists())

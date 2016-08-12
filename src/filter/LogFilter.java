@@ -27,8 +27,10 @@ public class LogFilter implements Filter {
 		// TODO Auto-generated method stub
 		HttpServletRequest req = (HttpServletRequest) request;
 		HttpServletResponse resp = (HttpServletResponse) response;
-		MDC.put("username", req.getSession().getAttribute("username"));
-		MDC.put("ip", req.getRemoteAddr());
+		if(req.getSession().getAttribute("username") != null && !req.getSession().getAttribute("username").equals("")){
+			MDC.put("username", req.getSession().getAttribute("username"));
+			MDC.put("ip", req.getRemoteAddr());
+		}
 		chain.doFilter(req, resp);
 	}
 
